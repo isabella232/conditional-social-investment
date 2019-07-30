@@ -1,12 +1,10 @@
 <template>
     <div class="content">
         <div class="md-layout">
-            <div
-                    class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50"
-            >
+            <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50">
+                <h2>Projects</h2>
                 <nav-tabs-card>
                     <template slot="content">
-                        <span class="md-nav-tabs-title">Projects:</span>
                         <md-tabs class="md-success" md-alignment="left">
                             <md-tab id="tab-home" md-label="Bugs" md-icon="bug_report">
                                 <nav-tabs-table></nav-tabs-table>
