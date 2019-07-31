@@ -50,17 +50,31 @@
 <script>
   import {
     StatsCard,
-    NavTabsTable
+    // NavTabsTable
   } from "@/components";
 
-  import ConditionCard from '@/components/Cards/ConditionCard'
+  // import ConditionCard from '@/components/Cards/ConditionCard';
+
+  import State from '@/state';
+  import Chain from '@/Blockchain';
 
   export default {
     name: "conditions-dashboard",
+    data () {
+        return {
+            conditions: State.state.conditions,
+        }
+    },
     components: {
       StatsCard,
-      NavTabsTable,
-      'condition-card': ConditionCard
-    }
+      // NavTabsTable,
+      // 'condition-card': ConditionCard
+    },
+    methods: {
+      getContract: State.getContract(),
+    },
+    beforeMount() {
+      this.getContract();
+    },
   }
 </script>

@@ -7,8 +7,8 @@ import App from "./App";
 // router setup
 import routes from "./routes/routes";
 
-// Store tree
-import store from './store';
+// State
+import state from './state';
 
 // Plugins
 import GlobalComponents from "./globalComponents";
@@ -39,7 +39,6 @@ new Vue({
   el: "#app",
   render: h => h(App),
   router,
-  store,
   data: {
     Chartist: Chartist
   }
