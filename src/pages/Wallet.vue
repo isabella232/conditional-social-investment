@@ -1,21 +1,21 @@
 <template>
     <div class="content">
         <div class="md-layout">
-            <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50">
-                <h2>Projects</h2>
+            <div class="md-layout-item" >
                 <nav-tabs-card>
                     <template slot="content">
+                        <span class="md-nav-tabs-title">Projects:</span>
                         <md-tabs class="md-success" md-alignment="left">
-                            <md-tab id="tab-home" md-label="Bugs" md-icon="bug_report">
-                                <nav-tabs-table></nav-tabs-table>
-                            </md-tab>
 
-                            <md-tab id="tab-pages" md-label="Website" md-icon="code">
-                                <nav-tabs-table></nav-tabs-table>
-                            </md-tab>
+                            <md-tab v-for="project in projects" :md-label="project.code" md-icon="bug_report">
+                                <md-card class="md-card-profile">
+                                    <md-card-content>
+                                        <h6 class="category text-gray">Hedge against the risk</h6>
+                                        <h4 class="card-title">Select a new condition</h4>
 
-                            <md-tab id="tab-posts" md-label="server" md-icon="cloud">
-                                <nav-tabs-table></nav-tabs-table>
+                                        <md-button class="md-round md-success">Split</md-button>
+                                    </md-card-content>
+                                </md-card>
                             </md-tab>
                         </md-tabs>
                     </template>
@@ -26,21 +26,19 @@
 </template>
 
 <script>
-  import {
-
-    NavTabsCard,
-    NavTabsTable,
-
-  } from "@/components";
+  import {NavTabsCard, NavTabsTable} from "@/components";
+  import {state} from "../state.js";
+  import UserCard from "./UserProfile/UserCard";
 
   export default {
     components: {
+      UserCard,
       NavTabsCard,
       NavTabsTable
     },
     data() {
       return {
-
+        projects: state.projects
       };
     }
   };
