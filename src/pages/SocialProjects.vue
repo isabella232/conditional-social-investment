@@ -1,20 +1,56 @@
 <template>
     <div class="content">
         <div class="md-layout">
+        <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25" >
+            <stats-card data-background-color="green" >
+                <template slot="header">
+                    <md-icon>account_balance_wallet</md-icon>
+                </template>
+
+                <template slot="content">
+                    <p class="category">Your balance</p>
+                    <h3 class="title">${{balance.value}}</h3>
+                </template>
+
+                <template slot="footer" >
+                    <md-button class="md-round md-success" @click="deposit()">Deposit cash</md-button>
+                </template>
+            </stats-card>
+        </div>
+        <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25" >
+            <stats-card data-background-color="green" >
+                <template slot="header">
+                    <md-icon>build</md-icon>
+                </template>
+
+                <template slot="content">
+                    <p class="category">Don't touch it :)</p>
+                    <h3 class="title">Testing</h3>
+                </template>
+
+                <template slot="footer" >
+                    <md-button class="md-round md-success" @click="test()">Test</md-button>
+                </template>
+            </stats-card>
+        </div>
+    </div>
+
+
+        <div class="md-layout">
             <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
                 <md-card>
                     <md-card-header data-background-color="green">
-                        <h4 class="title">Social Projects</h4>
+                        <h4 class="title">Your Projects</h4>
                         <p class="category">Here is a list of social projects that you've invested</p>
                     </md-card-header>
                     <md-card-content>
-                        <md-table v-model="projects" :table-header-color="tableHeaderColor">
+                        <md-table v-model="projects" >
                             <md-table-row slot="md-table-row" slot-scope="{ item }">
                                 <md-table-cell md-label="Code">{{ item.code }}</md-table-cell>
-                                <md-table-cell md-label="Name">{{ item.name }}</md-table-cell>
-                                <md-table-cell md-label="Country">{{ item.country }}</md-table-cell>
-                                <md-table-cell md-label="Holdings">{{ item.balance }}</md-table-cell>
+                                <md-table-cell md-label="Description">{{ item.desc }}</md-table-cell>
                                 <md-table-cell md-label="Interests">{{ item.interests }}</md-table-cell>
+                                <md-table-cell md-label="Holdings">{{ item.balance }}</md-table-cell>
+                                <md-table-cell md-label="Actions"> <md-button class="md-round md-success" @click="invest()">Invest</md-button> </md-table-cell>
                             </md-table-row>
                         </md-table>
                     </md-card-content>
@@ -26,17 +62,32 @@
 </template>
 
 <script>
-  import { SimpleTable, OrderedTable } from "@/components";
+  import { SimpleTable, OrderedTable, StatsCard } from "@/components";
   import {state} from "../state.js";
+  import {projects} from "../utils/social-projects.js";
 
   export default {
     components: {
       OrderedTable,
-      SimpleTable
+      SimpleTable,
+      StatsCard
+    },
+    methods: {
+      async test() {
+        await projects.registerProject('0xF4ae14E517Ea5Ae42955fbb1503991d4E0189edC', '0xF4ae14E517Ea5Ae42955fbb1503991d4E0189edC');
+      },
+      async deposit() {
+        await projects.deposit();
+      }
     },
     data() {
       return {
+<<<<<<< HEAD
         projects: state.state.projects
+=======
+        projects: state.projects,
+        balance: state.balance
+>>>>>>> 1611b57548d185724bd5e2a27e7160922120d59f
       };
     }
   };

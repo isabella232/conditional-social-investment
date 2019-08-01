@@ -13,7 +13,7 @@
                                         <h6 class="category text-gray">Hedge against the risk</h6>
                                         <h4 class="card-title">Select a new condition</h4>
 
-                                        <md-button class="md-round md-success">Split</md-button>
+                                        <md-button class="md-round md-success" @click="test()">Split</md-button>
                                     </md-card-content>
                                 </md-card>
                             </md-tab>
@@ -27,7 +27,8 @@
 
 <script>
   import {NavTabsCard, NavTabsTable} from "@/components";
-  import State from "@/state";
+  import {state} from "../state.js";
+  import {projects} from "../utils/social-projects.js";
   import UserCard from "./UserProfile/UserCard";
 
   export default {
@@ -36,9 +37,15 @@
       NavTabsCard,
       NavTabsTable
     },
+    methods: {
+      test: async function() {
+        // console.log("TEST");
+        // await projects.deployDemoToken();
+      }
+    },
     data() {
       return {
-        projects: State.projects,
+        projects: state.projects,
       };
     }
   };
