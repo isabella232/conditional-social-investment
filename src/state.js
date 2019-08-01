@@ -37,6 +37,14 @@ let State = {
       }
     ],
   },
+  projectDesc: {
+    "UNEMPLOYMENT":  "Job training and activation program",
+    "CANCER": "Breast cancer mammography analytics",
+    "WATER": "Building new wells in sub-saharan Africa"
+  },
+  balance: {
+    value: 0
+  },
   getContract() {
     let hg = Blockchain.getHGContract();
     Vue.set(this.state, 'hgContract', hg);
