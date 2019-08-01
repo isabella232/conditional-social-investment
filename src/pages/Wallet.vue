@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <div class="md-layout">
-            <div class="md-layout-item" >
+            <div class="md-layout-item">
                 <nav-tabs-card>
                     <template slot="content">
                         <span class="md-nav-tabs-title">Projects:</span>
@@ -27,7 +27,7 @@
 
 <script>
   import {NavTabsCard, NavTabsTable} from "@/components";
-  import {state} from "../state.js";
+  import State from "@/state";
   import UserCard from "./UserProfile/UserCard";
 
   export default {
@@ -38,7 +38,7 @@
     },
     data() {
       return {
-        projects: state.projects
+        projects: State.projects,
       };
     }
   };

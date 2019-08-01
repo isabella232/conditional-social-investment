@@ -36,7 +36,7 @@
     },
     data() {
       return {
-        projects: state.projects
+        projects: state.state.projects
       };
     }
   };
