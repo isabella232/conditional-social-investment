@@ -49,8 +49,8 @@
                                 <md-table-cell md-label="Code">{{ item.code }}</md-table-cell>
                                 <md-table-cell md-label="Description">{{ item.desc }}</md-table-cell>
                                 <md-table-cell md-label="Interests">{{ item.interests }}</md-table-cell>
-                                <md-table-cell md-label="Holdings">{{ item.balance }}</md-table-cell>
-                                <md-table-cell md-label="Actions"> <md-button class="md-round md-success" @click="invest()">Invest</md-button> </md-table-cell>
+                                <md-table-cell md-label="Holdings">${{ item.holdings }}</md-table-cell>
+                                <md-table-cell md-label="Actions"> <md-button class="md-round md-success" @click="invest(item)">Invest</md-button> </md-table-cell>
                             </md-table-row>
                         </md-table>
                     </md-card-content>
@@ -74,10 +74,13 @@
     },
     methods: {
       async test() {
-        await projects.registerProject('0xF4ae14E517Ea5Ae42955fbb1503991d4E0189edC', '0xF4ae14E517Ea5Ae42955fbb1503991d4E0189edC');
+        await projects.registerProject("0xF4ae14E517Ea5Ae42955fbb1503991d4E0189edC");
       },
       async deposit() {
         await projects.deposit();
+      },
+      async invest(project) {
+        await projects.invest(project.code);
       }
     },
     data() {
