@@ -49,10 +49,10 @@ export const projects = {
     let contract = await factory.deploy(CATALOG_ADDRESS);
     console.log(contract.address);
   },
-  deposit: async function() {
-    console.log("DEPOSITING 100 tokens to wallet: " + walletAddress);
+  deposit: async function(amount) {
+    console.log("DEPOSITING " + amount + " tokens to wallet: " + walletAddress);
     let walletContract = new ethers.Contract(walletAddress, demoWalletContract.abi, signer);
-    await walletContract.requestTokens(DEMO_TOKEN_ADDRESS, 100);
+    await walletContract.requestTokens(DEMO_TOKEN_ADDRESS, amount);
     this.updateBalance();
   },
   invest: async function(project) {
@@ -136,4 +136,13 @@ export const projects = {
 
 projects.fetchWallet();
 projects.fetchProjects();
+
+let filter = {
+  fromBlock: 0,
+  address: "0x2b27168e83cAb0Ee27CCF66c970587B92ee844C4"
+};
+
+provider.getLogs(filter).then((results) => {
+  console.log(results);
+});
 
