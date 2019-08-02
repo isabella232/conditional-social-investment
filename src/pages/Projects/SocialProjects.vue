@@ -1,5 +1,6 @@
 <template>
     <div class="content">
+        <invest-panel :active="selectedProject != null" :project="selectedProject" v-on:success="invested()"></invest-panel>
         <div class="md-layout">
             <balance-widget></balance-widget>
         <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25" >
@@ -49,6 +50,7 @@
 <script>
   import { SimpleTable, OrderedTable, StatsCard } from "@/components";
   import BalanceWidget from "./BalanceWidget";
+  import InvestPanel from "./InvestPanel";
   import {state} from "../../state.js";
   import {projects} from "../../utils/social-projects.js";
   import hgBinding from "../../utils/hgBinding.js";
@@ -59,23 +61,27 @@
       SimpleTable,
       StatsCard,
       BalanceWidget,
+      InvestPanel
     },
     methods: {
       async test() {
         console.log(hgBinding);
         await hgBinding.fetchConditions();
       },
-      async deposit() {
-        await projects.deposit();
+
+      invest(project) {
+        this.selectedProject = project;
       },
-      async invest(project) {
-        await projects.invest(project.code);
+
+      invested() {
+        this.selectedProject = null;
       }
     },
     data() {
       return {
         projects: state.projects,
-        balance: state.balance
+        balance: state.balance,
+        selectedProject: null
       };
     }
   };

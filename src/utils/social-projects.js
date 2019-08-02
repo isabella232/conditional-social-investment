@@ -1,13 +1,12 @@
+import {state} from "../state.js";
+import Vue from 'vue';
+
 const ethers = require('ethers');
 const catalogContract = require('../contracts/ProjectCatalog.json');
 const projectContract = require('../contracts/ProjectWithBonds.json');
 const demoTokenContract = require('../contracts/DemoToken.json');
 const demoWalletContract = require('../contracts/DemoInvestmentWallet.json');
 const couponContract = require('../contracts/Coupon.json');
-
-import {state} from "../state.js";
-
-
 
 const CATALOG_ADDRESS = "0x3A379D1277C54FB92a718Bb84d0145f7aC707a1F";
 const PROJECT_ADDRESS = "0xF4ae14E517Ea5Ae42955fbb1503991d4E0189edC";
@@ -55,10 +54,10 @@ export const projects = {
     await walletContract.requestTokens(DEMO_TOKEN_ADDRESS, amount);
     this.updateBalance();
   },
-  invest: async function(project) {
+  invest: async function(project, amount) {
     console.log("Investing into project: " + project);
     let walletContract = new ethers.Contract(walletAddress, demoWalletContract.abi, signer);
-    await walletContract.invest(10, "UNEMPLOYMENT");
+    await walletContract.invest(amount, "UNEMPLOYMENT");
     await projects.fetchProjects();
     await this.updateBalance();
   },
@@ -78,8 +77,9 @@ export const projects = {
     let added = await contract.getProjectAddress(name);
     console.log("Project added: " + added);
   },
-  fetchProjects: function() {
-    state.projects = [];
+  fetchProjects: async function() {
+    console.log("Fetching projects");
+    Vue.set(state, 'projects', []);
     let eventAbi = [catalogContract.abi[4]];
     let iface = new ethers.utils.Interface(eventAbi);
 
@@ -136,13 +136,4 @@ export const projects = {
 
 projects.fetchWallet();
 projects.fetchProjects();
-
-let filter = {
-  fromBlock: 0,
-  address: "0x2b27168e83cAb0Ee27CCF66c970587B92ee844C4"
-};
-
-provider.getLogs(filter).then((results) => {
-  console.log(results);
-});
 

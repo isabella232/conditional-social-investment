@@ -14,7 +14,7 @@
       <div>
         <img src="https://s3.eu-west-2.amazonaws.com/alice-res/alice-white.png" style="height:30px;" />
       </div>
-      <div class="title"> Investment Portal </div>
+      <div class="head-title"> Investment Portal </div>
 
     </div>
     <div class="sidebar-wrapper">
@@ -85,7 +85,7 @@ export default {
   .logo {
     text-align: center;
   }
-  .title {
+  .head-title {
     width: 100%;
     color: white;
     font-size: 30px;
