@@ -1,29 +1,27 @@
 import Vue from 'vue';
 import Blockchain from "@/Blockchain";
-import State from '@/state';
+import state from "@/state";
 
 let hgBinding = {
-  getContract() {
+  async getContract() {
     let hg = Blockchain.getHGContract();
-    Vue.set(State, 'hgContract', hg);
-  },
-  async getHGRegistry() {
-    let hgRegistry = await State.hgContract.createRegistry();
-    Vue.set(State, 'hgRegistry', hgRegistry);
+    state.hgContract = hg;
   },
   async getConditions() {
-    await State.hgRegistry.getConditions();
-    console.log("got conditions!");
-    console.log(State.hgRegistry);
-    Vue.set(State, 'conditions', State.hgRegistry.conditions);
+    state.hgRegistry = state.hgContract.getRegistry();
+    if(state.hgRegistry) {
+      state.hgRegistry.getConditions()
+      .then(() => {
+        state.conditions = state.hgRegistry.conditions;
+        console.log(state.conditions);
+      });
+    }
   },
   async addCondition(condition) {
-    if(State.hgContract && condition) {
-      let hg = State.hgContract;
+    if(state.hgContract && condition) {
+      let hg = state.hgContract;
       await hg.prepareCondition(condition.question, condition.oracle, condition.outcomesSlotsCount);
-      console.log("made new condition");
       await this.getConditions();
-      console.log(State.conditions);
     }
   }
 }

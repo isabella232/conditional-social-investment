@@ -1,8 +1,6 @@
-
-export const state = {
+let state = {
   conditions: [],
   hgContract: {},
-  hgRegistry: {},
   projects: [
     {
       code: "UNEMPLOYMENT",
@@ -31,5 +29,8 @@ export const state = {
   },
   balance: {
     value: 0
-  }
+  },
+  hgRegistry: {}
 };
+
+export default state;

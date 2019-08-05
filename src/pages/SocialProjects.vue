@@ -82,12 +82,8 @@
     },
     data() {
       return {
-<<<<<<< HEAD
-        projects: state.state.projects
-=======
         projects: state.projects,
         balance: state.balance
->>>>>>> 1611b57548d185724bd5e2a27e7160922120d59f
       };
     }
   };

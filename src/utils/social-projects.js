@@ -3,7 +3,7 @@ const catalogContract = require('../contracts/ProjectCatalog.json');
 const projectContract = require('../contracts/ProjectWithBonds.json');
 const demoTokenContract = require('../contracts/DemoToken.json');
 
-import {state} from "../state.js";
+import state from "@/state";
 
 
 
@@ -16,6 +16,7 @@ const injectedWeb3 = window.web3;
 if (typeof injectedWeb3 !== "undefined") {
   provider = new ethers.providers.Web3Provider(injectedWeb3.currentProvider);
   signer = provider.getSigner();
+  console.log(signer);
 } else {
   console.log("No web3 provider available");
 }
@@ -67,7 +68,6 @@ export const projects = {
     };
 
     provider.getLogs(filter).then((results) => {
-
       results.forEach(async (result) => {
         let event = iface.parseLog(result);
         let address = event.values[1];

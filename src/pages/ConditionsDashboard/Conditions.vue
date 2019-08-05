@@ -1,22 +1,22 @@
 <template>
     <div class="content">
-        <div v-if="conditions.length > 0" class="md-layout">
-            <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
-                <stats-card data-background-color="orange">
+        <div v-show="conditions" class="md-layout">
+            <div v-for="condition in conditions" class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
+                <stats-card data-background-color="blue">
                     <template slot="header">
                         <md-icon>content_copy</md-icon>
                     </template>
 
                     <template slot="content">
-                        <p class="category">Used Space</p>
-                        <h3 class="title">
-                            49/50
-                            <small>GB</small>
-                        </h3>
+                        <h4>Question</h4>
                     </template>
 
                     <template slot="footer">
                         <div class="stats">
+                            <h5>Oracle address:</h5>
+                            <p>0x038djdsodyf7h1289987848hsd98fysidufhlaiusd</p>
+                        </div><br>
+                        <div >
                             <md-icon class="text-danger">warning</md-icon>
                             <a href="#pablo">Get More Space...</a>
                         </div>
@@ -24,7 +24,7 @@
                 </stats-card>
             </div>
         </div>
-        <div v-else class="md-layout">
+        <div class="md-layout">
             <!-- <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"> -->
                 <h3>There are currently no conditions, create one!</h3>
             <!-- </div> -->
@@ -71,7 +71,7 @@
                 <md-progress-bar md-mode="indeterminate" v-if="sending"/>
                 <md-card-actions>
                   <md-button type="submit"
-                             class="md-primary"
+                             class="md-info"
                              :disabled="sending"
                              @click="addCondition">Create condition</md-button>
                 </md-card-actions>
@@ -112,13 +112,14 @@
       StatsCard,
     },
     methods: {
-      getContract: function() {
-          hgBinding.getContract();
+      getContract: async function() {
+          await hgBinding.getContract();
       },
-      getConditions: function() {
-          hgBinding.getHGRegistry();
-          console.log(state.hgRegistry);
+      getConditions: async function() {
+          await hgBinding.getConditions();
           this.conditions = state.conditions;
+          console.log(state.conditions);
+          console.log(this.conditions);
       },
       addCondition: function() {
           this.sending = true;
