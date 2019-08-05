@@ -1,22 +1,8 @@
 <template>
     <div class="content">
+        <invest-panel :active="selectedProject != null" :project="selectedProject" v-on:success="invested()"></invest-panel>
         <div class="md-layout">
-        <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25" >
-            <stats-card data-background-color="green" >
-                <template slot="header">
-                    <md-icon>account_balance_wallet</md-icon>
-                </template>
-
-                <template slot="content">
-                    <p class="category">Your balance</p>
-                    <h3 class="title">${{balance.value}}</h3>
-                </template>
-
-                <template slot="footer" >
-                    <md-button class="md-round md-success" @click="deposit()">Deposit cash</md-button>
-                </template>
-            </stats-card>
-        </div>
+            <balance-widget></balance-widget>
         <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25" >
             <stats-card data-background-color="green" >
                 <template slot="header">
@@ -49,8 +35,8 @@
                                 <md-table-cell md-label="Code">{{ item.code }}</md-table-cell>
                                 <md-table-cell md-label="Description">{{ item.desc }}</md-table-cell>
                                 <md-table-cell md-label="Interests">{{ item.interests }}</md-table-cell>
-                                <md-table-cell md-label="Holdings">{{ item.balance }}</md-table-cell>
-                                <md-table-cell md-label="Actions"> <md-button class="md-round md-success" @click="invest()">Invest</md-button> </md-table-cell>
+                                <md-table-cell md-label="Holdings">${{ item.holdings }}</md-table-cell>
+                                <md-table-cell md-label="Actions"> <md-button class="md-round md-success" @click="invest(item)">Invest</md-button> </md-table-cell>
                             </md-table-row>
                         </md-table>
                     </md-card-content>
@@ -63,27 +49,39 @@
 
 <script>
   import { SimpleTable, OrderedTable, StatsCard } from "@/components";
-  import {state} from "../state.js";
-  import {projects} from "../utils/social-projects.js";
+  import BalanceWidget from "./BalanceWidget";
+  import InvestPanel from "./InvestPanel";
+  import {state} from "../../state.js";
+  import {projects} from "../../utils/social-projects.js";
+  import hgBinding from "../../utils/hgBinding.js";
 
   export default {
     components: {
       OrderedTable,
       SimpleTable,
-      StatsCard
+      StatsCard,
+      BalanceWidget,
+      InvestPanel
     },
     methods: {
       async test() {
-        await projects.registerProject('0xF4ae14E517Ea5Ae42955fbb1503991d4E0189edC', '0xF4ae14E517Ea5Ae42955fbb1503991d4E0189edC');
+        console.log(hgBinding);
+        await hgBinding.fetchConditions();
       },
-      async deposit() {
-        await projects.deposit();
+
+      invest(project) {
+        this.selectedProject = project;
+      },
+
+      invested() {
+        this.selectedProject = null;
       }
     },
     data() {
       return {
         projects: state.projects,
-        balance: state.balance
+        balance: state.balance,
+        selectedProject: null
       };
     }
   };
