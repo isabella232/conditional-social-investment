@@ -118,6 +118,7 @@
       getConditions: async function() {
           await hgBinding.getConditions();
           this.conditions = state.conditions;
+          console.log("Getting conditions");
           console.log(state.conditions);
           console.log(this.conditions);
       },
