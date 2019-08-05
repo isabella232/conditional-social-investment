@@ -10,10 +10,9 @@ let hgBinding = {
   async getConditions() {
     state.hgRegistry = state.hgContract.getRegistry();
     if(state.hgRegistry) {
-      state.hgRegistry.getConditions()
+      await state.hgRegistry.getConditions()
       .then(() => {
         state.conditions = state.hgRegistry.conditions;
-        console.log(state.conditions);
       });
     }
   },

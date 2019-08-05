@@ -1,25 +1,22 @@
 <template>
     <div class="content">
         <div v-show="conditions" class="md-layout">
-            <div v-for="condition in conditions" class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
+            <div v-for="condition in conditions"
+                 class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
                 <stats-card data-background-color="blue">
                     <template slot="header">
                         <md-icon>content_copy</md-icon>
                     </template>
 
                     <template slot="content">
-                        <h4>Question</h4>
+                        <h4> {{ condition.values.questionId | getQuestion }} </h4>
                     </template>
 
                     <template slot="footer">
                         <div class="stats">
                             <h5>Oracle address:</h5>
-                            <p>0x038djdsodyf7h1289987848hsd98fysidufhlaiusd</p>
+                            <p>{{ condition.values.oracle }}</p>
                         </div><br>
-                        <div >
-                            <md-icon class="text-danger">warning</md-icon>
-                            <a href="#pablo">Get More Space...</a>
-                        </div>
                     </template>
                 </stats-card>
             </div>
@@ -92,12 +89,13 @@
   import hgBinding from '@/utils/hgBinding';
   import Chain from '@/Blockchain';
   import state from '@/state';
+  import { utils } from 'ethers';
 
   export default {
     name: "conditions-dashboard",
     data: function () {
         return {
-            conditions: [],
+            conditions: state.conditions,
             showSidepanel: false,
             form: {
               question: null,
@@ -118,8 +116,7 @@
       getConditions: async function() {
           await hgBinding.getConditions();
           this.conditions = state.conditions;
-          console.log("Getting conditions");
-          console.log(state.conditions);
+          console.log("Got conditions..");
           console.log(this.conditions);
       },
       addCondition: function() {
@@ -132,6 +129,13 @@
       this.getContract();
       this.getConditions();
     },
+    filters: {
+        getQuestion: function (questionId) {
+            if (!questionId) return 'Question name unknown';
+            let question = utils.parseBytes32String(questionId);
+            return question;
+        }
+    }
   }
 </script>
 
