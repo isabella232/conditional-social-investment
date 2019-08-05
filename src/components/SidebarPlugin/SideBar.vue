@@ -6,19 +6,16 @@
     :style="sidebarStyle"
   >
     <div class="logo">
-      <a href="#" class="simple-text logo-mini">
-        <div class="logo-img">
-          <img :src="imgLogo" alt="" />
-        </div>
-      </a>
+      <!--<a href="#" class="simple-text logo-mini">-->
+        <!--<div class="logo-img">-->
+         <!---->
+        <!--</div>-->
+      <!--</a>-->
+      <div>
+        <img src="https://s3.eu-west-2.amazonaws.com/alice-res/alice-white.png" style="height:30px;" />
+      </div>
+      <div class="head-title"> Investment Portal </div>
 
-      <a
-        href="https://www.creative-tim.com/product/vue-material-dashboard"
-        target="_blank"
-        class="simple-text logo-normal"
-      >
-        {{ title }}
-      </a>
     </div>
     <div class="sidebar-wrapper">
       <slot name="content"></slot>
@@ -53,10 +50,6 @@ export default {
       type: String,
       default: require("@/assets/img/sidebar-2.jpg")
     },
-    imgLogo: {
-      type: String,
-      default: require("@/assets/img/vue-logo.png")
-    },
     activeColor: {
       type: String,
       default: "green",
@@ -89,9 +82,13 @@ export default {
 };
 </script>
 <style>
-@media screen and (min-width: 991px) {
-  .nav-mobile-menu {
-    display: none;
+  .logo {
+    text-align: center;
   }
-}
+  .head-title {
+    width: 100%;
+    color: white;
+    font-size: 30px;
+    margin-top: 15px;
+  }
 </style>
