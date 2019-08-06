@@ -27,6 +27,10 @@ let state = {
   projectDesc: {
     "UNEMPLOYMENT":  "Job training and activation program"
   },
+  wallet: {
+    active: false,
+    address: ''
+  },
   balance: {
     value: 0
   },
