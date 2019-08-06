@@ -47,7 +47,8 @@ export const projects = {
   deployDemoWallet: async function() {
     let factory = new ethers.ContractFactory(demoWalletContract.abi, demoWalletContract.bytecode, signer);
     let contract = await factory.deploy(CATALOG_ADDRESS);
-    console.log(contract.address);
+    console.log("Created wallet: " + contract.address);
+    this.fetchWallet();
   },
   deposit: async function(amount) {
     console.log("DEPOSITING " + amount + " tokens to wallet: " + walletAddress);
@@ -80,7 +81,7 @@ export const projects = {
   },
   fetchProjects: async function() {
     console.log("Fetching projects");
-    Vue.set(state, 'projects', []);
+    state.projects.length = 0;
     let eventAbi = [catalogContract.abi[4]];
     let iface = new ethers.utils.Interface(eventAbi);
 
@@ -127,12 +128,12 @@ export const projects = {
     provider.getLogs(filter).then((results) => {
       if (results.length > 0) {
         walletAddress = results[0].address;
-        console.log("Investment wallet found: " + walletAddress);
+        state.wallet.active = true;
         this.updateBalance();
+        this.fetchProjects();
       }
     });
   }
 };
 
 projects.fetchWallet();
-projects.fetchProjects();
