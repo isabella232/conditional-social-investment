@@ -11,13 +11,14 @@ const couponContract = require('../contracts/Coupon.json');
 const CATALOG_ADDRESS = "0x3A379D1277C54FB92a718Bb84d0145f7aC707a1F";
 const PROJECT_ADDRESS = "0xF4ae14E517Ea5Ae42955fbb1503991d4E0189edC";
 const DEMO_TOKEN_ADDRESS = "0x0d694e6d4310b10830abe7d5CFfde8b4Bf267B40";
-var provider, signer, walletAddress;
+var provider, signer, walletAddress, userAddress;
 
 const injectedWeb3 = window.web3;
 if (typeof injectedWeb3 !== "undefined") {
   provider = new ethers.providers.Web3Provider(injectedWeb3.currentProvider);
   console.log(provider);
   signer = provider.getSigner();
+  userAddress = signer.getAddress();
   console.log(signer);
 } else {
   console.log("No web3 provider available");
@@ -58,7 +59,7 @@ export const projects = {
   invest: async function(project, amount) {
     console.log("Investing into project: " + project);
     let walletContract = new ethers.Contract(walletAddress, demoWalletContract.abi, signer);
-    await walletContract.invest(amount, "UNEMPLOYMENT");
+    await walletContract.investAndRedeem(amount, "UNEMPLOYMENT");
     await projects.fetchProjects();
     await this.updateBalance();
   },
@@ -100,7 +101,8 @@ export const projects = {
         //Fetch coupon holdings
         let couponAddress = await contract.getCoupon();
         let coupon = new ethers.Contract(couponAddress, couponContract.abi, signer);
-        let holdings = await coupon.balanceOf(walletAddress);
+
+        let holdings = await coupon.balanceOf(userAddress);
 
         // Fetch Token
         let tokenAddress = await contract.getToken();
@@ -118,6 +120,7 @@ export const projects = {
         state.projects.push(project);
       });
     });
+    console.log(state.projects);
   },
   fetchWallet: async function() {
     let address = await signer.getAddress();

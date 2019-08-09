@@ -2,7 +2,7 @@
     <md-card class="md-layout md-elevation-2">
         <md-card-header data-background-color="blue" class="md-layout-item">
             <div>
-                <div class="md-title">{{ condition.questionId | getQuestion }}</div>
+                <div class="md-title">{{ condition.questionId | parseQuestion }}</div>
                 <md-divider md-get-palette-color="white"></md-divider>
                 <h6>Oracle address:</h6>
                 <h4 style="overflow-wrap: break-word;">{{ condition.oracle }}</h4>
@@ -48,8 +48,10 @@ export default {
         fullSplit: async function () {
             if(this.selectedCondition && this.project) {
                 await this.project.coupon.approve(state.hgContract.contract.address, this.selectedCondition.splitAmount);
-                let position = await this.selectedCondition.fullSplit(this.project.contract.address, 10);
+                let position = await this.selectedCondition.fullSplit(this.project.contract.address, this.selectedCondition.splitAmount);
                 console.log(position);
+                let balance = await this.project.coupon.balanceOf(state.hgContract.contract.address);
+                console.log(balance);
                 this.$emit('split-success');
             }
         },
@@ -60,8 +62,6 @@ export default {
             else {
                 this.selectedCondition = condition;
             }
-            console.log(this.selectedCondition);
-            console.log(this.project);
         },
     },
     data: function() {
@@ -70,7 +70,7 @@ export default {
         }
     },
     filters: {
-        getQuestion: function (questionId) {
+        parseQuestion: function (questionId) {
             if (!questionId) return 'Question name unknown';
             let question = utils.parseBytes32String(questionId);
             return question;

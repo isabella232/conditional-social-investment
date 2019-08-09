@@ -14,13 +14,13 @@
                     </template>
 
                     <template slot="content">
-                        <h4> {{ condition.values.questionId | getQuestion }} </h4>
+                        <h4> {{ condition.questionId | getQuestion }} </h4>
                     </template>
 
                     <template slot="footer">
                         <div class="stats">
                             <h5>Oracle address:</h5>
-                            <p>{{ condition.values.oracle }}</p>
+                            <p>{{ condition.oracle }}</p>
                         </div><br>
                     </template>
                 </stats-card>

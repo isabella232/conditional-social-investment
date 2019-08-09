@@ -19,7 +19,7 @@
                                                          md-content="Your condition was successfully split"
                                                          md-confirm-text="OK"/>
                                         <div class="md-layout md-gutter">
-                                            <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-50">
+                                            <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-100">
                                                 <stats-card data-background-color="lightblue">
                                                     <template slot="header">
                                                         <md-icon>content_copy</md-icon>
@@ -28,28 +28,9 @@
                                                     <template slot="content">
                                                         <p class="category">Amount deposited into this project</p>
                                                         <h3 class="title">
-                                                            <!-- {{ selectedProject.holdings }} -->
+                                                            {{ selectedProject.holdings }}
                                                             <small>GBP</small>
                                                         </h3>
-                                                    </template>
-                                                </stats-card>
-                                            </div>
-                                            <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-50">
-                                                <stats-card data-background-color="lightblue">
-                                                    <template slot="header">
-                                                        <md-icon>content_copy</md-icon>
-                                                    </template>
-
-                                                    <template slot="content">
-                                                        <p class="category">Amount approved for hedging</p>
-                                                        <h3 class="title">
-                                                            <!-- {{ selectedProject.coupon.balanceOf() }} -->
-                                                            <small>GBP</small>
-                                                        </h3>
-                                                    </template>
-
-                                                    <template slot="footer">
-                                                        <md-button>Add</md-button>
                                                     </template>
                                                 </stats-card>
                                             </div>
