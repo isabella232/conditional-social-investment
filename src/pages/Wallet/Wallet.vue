@@ -14,82 +14,55 @@
                             <md-tab v-for="project in projects"
                                     :md-label="project.code"
                                     @click="selectProject(project)">
-                                    <div class="md-layout md-gutter">
-                                        <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-50">
-                                            <stats-card data-background-color="lightblue">
-                                                <template slot="header">
-                                                    <md-icon>content_copy</md-icon>
-                                                </template>
+                                    <div v-if="selectedProject === project">
+                                        <md-dialog-alert :md-active.sync="splitSuccess"
+                                                         md-content="Your condition was successfully split"
+                                                         md-confirm-text="OK"/>
+                                        <div class="md-layout md-gutter">
+                                            <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-50">
+                                                <stats-card data-background-color="lightblue">
+                                                    <template slot="header">
+                                                        <md-icon>content_copy</md-icon>
+                                                    </template>
 
-                                                <template slot="content">
-                                                    <p class="category">Amount deposited into this project</p>
-                                                    <h3 class="title">
-                                                        <!-- {{ selectedProject.holdings }} -->
-                                                        <small>GBP</small>
-                                                    </h3>
-                                                </template>
-                                            </stats-card>
+                                                    <template slot="content">
+                                                        <p class="category">Amount deposited into this project</p>
+                                                        <h3 class="title">
+                                                            <!-- {{ selectedProject.holdings }} -->
+                                                            <small>GBP</small>
+                                                        </h3>
+                                                    </template>
+                                                </stats-card>
+                                            </div>
+                                            <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-50">
+                                                <stats-card data-background-color="lightblue">
+                                                    <template slot="header">
+                                                        <md-icon>content_copy</md-icon>
+                                                    </template>
+
+                                                    <template slot="content">
+                                                        <p class="category">Amount approved for hedging</p>
+                                                        <h3 class="title">
+                                                            <!-- {{ selectedProject.coupon.balanceOf() }} -->
+                                                            <small>GBP</small>
+                                                        </h3>
+                                                    </template>
+
+                                                    <template slot="footer">
+                                                        <md-button>Add</md-button>
+                                                    </template>
+                                                </stats-card>
+                                            </div>
                                         </div>
-                                        <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-50">
-                                            <stats-card data-background-color="lightblue">
-                                                <template slot="header">
-                                                    <md-icon>content_copy</md-icon>
-                                                </template>
-
-                                                <template slot="content">
-                                                    <p class="category">Amount approved for hedging</p>
-                                                    <h3 class="title">
-                                                        <!-- {{ selectedProject.coupon.balanceOf() }} -->
-                                                        <small>GBP</small>
-                                                    </h3>
-                                                </template>
-
-                                                <template slot="footer">
-                                                    <md-button>Add</md-button>
-                                                </template>
-                                            </stats-card>
+                                        <div v-if="conditions.length > 0" class="md-layout">
+                                            <div v-for="condition in conditions"
+                                                 class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
+                                                <condition-card :condition="condition"
+                                                                :project="selectedProject"
+                                                                v-on:split-success="alertSplitSuccess"></condition-card>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div v-if="conditions.length > 0" class="md-layout">
-                                        <div v-for="condition in conditions"
-                                             class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
-                                            <md-card class="md-layout md-elevation-2">
-                                                <md-card-header data-background-color="blue" class="md-layout-item">
-                                                    <div>
-                                                        <div class="md-title">{{ condition.questionId | getQuestion }}</div>
-                                                        <md-divider md-get-palette-color="white"></md-divider>
-                                                        <h6>Oracle address:</h6>
-                                                        <h4 style="overflow-wrap: break-word;">{{ condition.oracle }}</h4>
-                                                    </div>
-                                                </md-card-header>
-
-                                                <md-card-expand>
-                                                    <md-card-actions md-alignment="space-between">
-                                                        <md-card-expand-trigger>
-                                                            <md-button data-background-color="teal"
-                                                                       @click.native="selectCondition(condition)">
-                                                                       <span v-if="!condition.open">Select</span>
-                                                                       <span v-else>Close</span>
-                                                            </md-button>
-                                                        </md-card-expand-trigger>
-                                                    </md-card-actions>
-                                                    <md-card-expand-content>
-                                                        <md-card-content>
-                                                            <md-field>
-                                                                <label>Enter Amount</label>
-                                                                <span class="md-prefix">£</span>
-                                                                <md-input v-model="condition.splitAmount"></md-input>
-                                                            </md-field>
-                                                            <md-button @click="fullSplit"
-                                                                       v-bind:class="{ 'md-lightblue': (condition.splitAmount && condition.splitAmount.length > 0) }">
-                                                                       Split</md-button>
-                                                            <md-button>Merge</md-button>
-                                                        </md-card-content>
-                                                    </md-card-expand-content>
-                                                </md-card-expand>
-                                            </md-card>
-                                        </div>
-                                    </div>
+                                </div>
                             </md-tab>
                         </md-tabs>
                     </template>
@@ -102,40 +75,24 @@
 <script>
   import { NavTabsCard, NavTabsTable, StatsCard } from "@/components";
   import state from "@/state";
-  import { utils } from "ethers";
   import Vue from "vue";
   import hgBinding from "@/utils/hgBinding";
   import { projects } from "@/utils/social-projects.js";
   import UserCard from "../UserProfile/UserCard";
   import TreeChart from "vue-tree-chart";
+  import ConditionCard from "./ConditionCard";
 
   export default {
     components: {
       NavTabsCard,
       NavTabsTable,
       StatsCard,
-      TreeChart
+      TreeChart,
+      ConditionCard
     },
     methods: {
-      selectCondition: function(condition) {
-          if(this.selectedCondition && condition === this.selectedCondition) {
-              this.selectedCondition = null;
-              Vue.condition.open = !condition.open;
-          }
-          else {
-              this.selectedCondition = condition;
-              condition.open = !condition.open;
-          }
-          console.log(this.selectedCondition);
-      },
-      fullSplit: async function () {
-          console.log('trying to split');
-          if(this.selectedCondition && this.selectedProject) {
-              await this.selectedProject.token.approve(state.hgContract.contract.address, this.selectedCondition.splitAmount);
-              // console.log(this.selectedCondition);
-              let position = await this.selectedCondition.fullSplit(this.selectedProject.contract.address, 10);
-              console.log(position);
-          }
+      alertSplitSuccess: function() {
+        this.splitSuccess = !this.splitSuccess;
       },
       getContract: async function() {
         await hgBinding.getContract();
@@ -161,11 +118,9 @@
       return {
         projects: [],
         conditions: [],
-        modalOpen: false,
         selectedProject: null,
         options: ['Overview', 'Conditions'],
-        selectedCondition: null,
-        projectToken: null,
+        splitSuccess: false,
         wallet: state.wallet,
       }
     },
@@ -174,13 +129,6 @@
         this.fetchProjects();
         this.getConditions();
     },
-    filters: {
-        getQuestion: function (questionId) {
-            if (!questionId) return 'Question name unknown';
-            let question = utils.parseBytes32String(questionId);
-            return question;
-        }
-    }
   };
 </script>
 <style media="screen" lang="scss">
