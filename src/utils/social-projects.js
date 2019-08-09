@@ -1,4 +1,4 @@
-import {state} from "../state.js";
+import state from "@/state";
 import Vue from 'vue';
 
 const ethers = require('ethers');
@@ -31,7 +31,6 @@ export const projects = {
   },
   deployProject: async function() {
     let factory = new ethers.ContractFactory(projectContract.abi, projectContract.bytecode, signer);
-
     //constructor(string memory _name, uint8 _upfrontPaymentPercentage, uint256 _couponNominalPrice, uint256 _couponInterestRate) public
     let contract = await factory.deploy('UNEMPLOYMENT', 0, 1, 15);
     console.log(contract.address);
@@ -103,10 +102,16 @@ export const projects = {
         let coupon = new ethers.Contract(couponAddress, couponContract.abi, signer);
         let holdings = await coupon.balanceOf(walletAddress);
 
+        // Fetch Token
+        let tokenAddress = await contract.getToken();
+        let token = new ethers.Contract(tokenAddress, demoTokenContract.abi, signer);
+
         let project = {
           code: code,
           desc: state.projectDesc[code],
           contract: contract,
+          coupon: coupon,
+          token: token,
           interests: interests + '%',
           holdings: holdings.valueOf()
         };

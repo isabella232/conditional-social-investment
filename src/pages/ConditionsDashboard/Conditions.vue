@@ -1,6 +1,11 @@
 <template>
-    <div class="content">
-        <div v-show="conditions" class="md-layout">
+    <div class="content conditions-page">
+        <div class="md-layout">
+            <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
+                <h2>Available Conditions</h2>
+            </div>
+        </div>
+        <div v-if="conditions.length > 0" class="md-layout">
             <div v-for="condition in conditions"
                  class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
                 <stats-card data-background-color="blue">
@@ -21,10 +26,8 @@
                 </stats-card>
             </div>
         </div>
-        <div class="md-layout">
-            <!-- <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"> -->
-                <h3>There are currently no conditions, create one!</h3>
-            <!-- </div> -->
+        <div v-else class="md-layout">
+            <h3>There are currently no conditions, create one!</h3>
         </div>
         <md-button class="add-condition md-fab-top-center md-fab"
                    style="background-color: #1CB8C4 !important;"
@@ -70,7 +73,7 @@
                   <md-button type="submit"
                              class="md-info"
                              :disabled="sending"
-                             @click="addCondition">Create condition</md-button>
+                             @click="prepareCondition">Create condition</md-button>
                 </md-card-actions>
               </md-card>
 
@@ -116,12 +119,11 @@
       getConditions: async function() {
           await hgBinding.getConditions();
           this.conditions = state.conditions;
-          console.log("Got conditions..");
           console.log(this.conditions);
       },
-      addCondition: function() {
+      prepareCondition: async function() {
           this.sending = true;
-          hgBinding.addCondition(this.form);
+          await hgBinding.prepareCondition(this.form);
           this.conditionAdded = true;
       },
     },
@@ -140,6 +142,4 @@
 </script>
 
 <style media="screen">
-    .add-condition {
-    }
 </style>

@@ -217,7 +217,11 @@
         background: linear-gradient(60deg, $purple-400, $purple-600);
         @include shadow-big-color($brand-primary);
     }
-
+    [data-background-color="lightblue"],
+    .md-tabs.md-lightblue .md-tabs-navigation{
+        background: linear-gradient(60deg, $light-blue-400, $light-blue-600);
+        @include shadow-big-color($brand-lightblue);
+    }
     [data-background-color="blue"],
     .md-tabs.md-info .md-tabs-navigation{
         background: linear-gradient(60deg, $cyan-400, $cyan-600);
@@ -240,6 +244,17 @@
     .md-tabs.md-danger .md-tabs-navigation{
         background: linear-gradient(60deg, $red-400, $red-600);
         @include shadow-big-color($brand-danger);
+    }
+
+    [data-background-color="teal"],
+    .md-tabs.md-teal .md-tabs-navigation{
+        background: linear-gradient(60deg, $teal-400, $teal-600);
+        @include shadow-big-color($brand-teal);
+    }
+    [data-background-color="deeppurple"],
+    .md-tabs.md-deep-purple .md-tabs-navigation{
+        background: linear-gradient(60deg, $deep-purple-400, $deep-purple-600);
+        @include shadow-big-color($brand-deep-purple);
     }
 
     [data-background-color]{

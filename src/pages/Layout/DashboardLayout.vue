@@ -69,3 +69,8 @@ export default {
   }
 };
 </script>
+<style media="screen">
+  .main-panel {
+    overflow-x: hidden;
+  }
+</style>

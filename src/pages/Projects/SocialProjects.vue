@@ -66,37 +66,27 @@
 </template>
 
 <script>
-  import {SimpleTable, OrderedTable, StatsCard} from "@/components";
+  import {StatsCard} from "@/components";
   import BalanceWidget from "./BalanceWidget";
   import InvestPanel from "./InvestPanel";
-  import {state} from "../../state.js";
+  import state from "@/state";
   import {projects} from "../../utils/social-projects.js";
-  import hgBinding from "../../utils/hgBinding.js";
 
   export default {
     components: {
-      OrderedTable,
-      SimpleTable,
       StatsCard,
       BalanceWidget,
       InvestPanel
     },
     methods: {
-      async test() {
-        console.log(hgBinding);
-        await hgBinding.fetchConditions();
-      },
-
       async createWallet() {
         this.creating = true;
         await projects.deployDemoWallet();
         this.creating = false;
       },
-
       invest(project) {
         this.selectedProject = project;
       },
-
       invested() {
         this.selectedProject = null;
       }
@@ -104,11 +94,12 @@
     data() {
       return {
         projects: state.projects,
+        conditions: [],
         balance: state.balance,
         selectedProject: null,
         wallet: state.wallet,
         creating: false
       };
-    }
+    },
   };
 </script>
