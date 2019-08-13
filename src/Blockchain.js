@@ -16,6 +16,17 @@ let Blockchain = {
       else {
         console.log('web3 not found');
       }
+  },
+  getCurrentUserAddress() {
+    const injectedWeb3 = window.web3;
+    if (typeof injectedWeb3 !== "undefined") {
+      let provider = new ethers.providers.Web3Provider(injectedWeb3.currentProvider);
+      let signer = provider.getSigner();
+      let userAddress = signer.getAddress();
+      return(userAddress);
+    } else {
+      console.log("No web3 provider available");
+    }
   }
 }
 

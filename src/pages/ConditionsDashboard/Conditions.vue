@@ -55,18 +55,6 @@
                         <md-input name="oracle" id="oracle" v-model="form.oracle" :disabled="sending"/>
                       </md-field>
                     </div>
-                    <!-- <div class="md-layout-item md-small-size-50">
-                      <md-field>
-                        <label for="Outcome 1">First Outcome</label>
-                        <md-input name="Outcome 1" v-model="form.outcome1" :disabled="sending"/>
-                      </md-field>
-                    </div>
-                    <div class="md-layout-item md-small-size-50">
-                      <md-field>
-                        <label for="Outcome 2">Outcome 2</label>
-                        <md-input name="Outcome 2" id="oracle" v-model="form.outcome2" :disabled="sending"/>
-                      </md-field>
-                    </div> -->
                 </md-card-content>
                 <md-progress-bar md-mode="indeterminate" v-if="sending"/>
                 <md-card-actions>

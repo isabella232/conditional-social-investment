@@ -3,9 +3,9 @@
         <md-card-header data-background-color="blue" class="md-layout-item">
             <div>
                 <div class="md-title">{{ condition.questionId | parseQuestion }}</div>
-                <md-divider md-get-palette-color="white"></md-divider>
+                <!-- <md-divider md-get-palette-color="white"></md-divider>
                 <h6>Oracle address:</h6>
-                <h4 style="overflow-wrap: break-word;">{{ condition.oracle }}</h4>
+                <h4 style="overflow-wrap: break-word;">{{ condition.oracle }}</h4> -->
             </div>
         </md-card-header>
 
@@ -23,11 +23,10 @@
                 <md-card-content>
                     <md-field>
                         <label>Enter Amount</label>
-                        <span class="md-prefix">£</span>
+                        <span class="md-prefix">$</span>
                         <md-input v-model="condition.splitAmount"></md-input>
                     </md-field>
-                    <md-button @click="fullSplit"
-                                v-bind:class="{ 'md-teal': (condition.splitAmount && condition.splitAmount.length > 0) }">
+                    <md-button @click="fullSplit">
                                 Split</md-button>
                     <md-button>Merge</md-button>
                 </md-card-content>
@@ -48,11 +47,13 @@ export default {
         fullSplit: async function () {
             if(this.selectedCondition && this.project) {
                 await this.project.coupon.approve(state.hgContract.contract.address, this.selectedCondition.splitAmount);
-                let position = await this.selectedCondition.fullSplit(this.project.contract.address, this.selectedCondition.splitAmount);
+                let position = await this.selectedCondition.fullSplit(this.project.coupon.address, this.selectedCondition.splitAmount);
+                console.log("Position: ");
                 console.log(position);
                 let balance = await this.project.coupon.balanceOf(state.hgContract.contract.address);
-                console.log(balance);
-                this.$emit('split-success');
+                console.log(parseInt(balance));
+
+                this.$emit('success');
             }
         },
         selectCondition: function(condition) {
