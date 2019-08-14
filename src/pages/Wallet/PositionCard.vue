@@ -9,6 +9,7 @@
 
         <md-card-content>
             <md-checkbox v-model="selectedToMerge"
+                         class="md-primary"
                          :value="position">Select to merge</md-checkbox>
         </md-card-content>
         <md-card-actions>
@@ -90,5 +91,18 @@ export default {
 }
 .md-icon {
     font-size: 80px !important;
+}
+.md-checkbox {
+    display: flex;
+}
+.md-checkbox.md-theme-default.md-checked.md-primary .md-checkbox-container {
+    /* background-color: #448aff !important; */
+    color: #fff !important;
+}
+.md-checkbox.md-checked .md-checkbox-container:after {
+    border-color: #ffffff !important;
+    color: #fff !important;
+    top: 2px !important;
+    left: 7px !important;
 }
 </style>
