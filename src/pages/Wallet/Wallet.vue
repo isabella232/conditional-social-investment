@@ -121,6 +121,10 @@
           await hgBinding.getConditions();
           await hgBinding.getPositions();
           this.positions = state.positions;
+          this.positions.forEach(async (pos) => {
+              pos.balance = await pos.balanceOf();
+              console.log(pos);
+          })
       },
       splitFromPosition: function(position, index) {
           this.openConditionsPanel();

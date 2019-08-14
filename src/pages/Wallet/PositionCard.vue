@@ -1,5 +1,5 @@
 <template lang="html">
-    <md-card class="md-layout md-elevation-2 md-layout-item md-size-50">
+    <md-card class="md-layout md-elevation-2 md-layout-item md-size-33">
         <md-card-header data-background-color="blue" class="md-layout-item">
             <div class="md-title">Position</div>
             <h4> {{ position[0].condition.questionId | parseQuestion }}</h4>
