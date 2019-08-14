@@ -6,6 +6,12 @@
             <md-divider md-get-palette-color="white"></md-divider>
             <h5>Balance: <b>{{position.balance}}</b></h5>
         </md-card-header>
+
+        <md-card-content>
+                Children count: {{position.children ? position.children.length : 0}}<br/>
+
+                <md-checkbox v-model="selectedToMerge" :value="position">Select to merge</md-checkbox>
+        </md-card-content>
         <md-card-actions>
             <md-button v-if="position.children"
                        @click="openChildren()"
@@ -15,6 +21,9 @@
                        Children</md-button>
             <md-button @click="selectSplit(position.indexSet)"
                        class="md-deep-purple">Split</md-button>
+            <md-button @click="merge()" class="md-icon-button md-raised md-primary">
+                           <md-icon>call_merge</md-icon>
+                           <md-tooltip md-direction="top">Merge</md-tooltip></md-button>
         </md-card-actions>
     </md-card>
 </template>
@@ -42,6 +51,8 @@ export default {
             this.extendTree = !this.extendTree;
             this.$forceUpdate();
             this.$emit('extend-tree');
+        merge: function() {
+            this.$emit('open-merge-panel');
         }
     },
     data: function() {
@@ -52,7 +63,8 @@ export default {
             options: [
                 { name: 'Yes' },
                 { name: 'No' }
-            ]
+            ],
+            selectedToMerge: state.selectedToMerge
         }
     },
     filters: {

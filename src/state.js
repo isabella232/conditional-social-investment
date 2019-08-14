@@ -34,7 +34,8 @@ let state = {
   balance: {
     value: 0
   },
-  hgRegistry: {}
+  hgRegistry: {},
+  selectedToMerge: []
 };
 
 export default state;

@@ -21,6 +21,7 @@
                                                 md-size-100
                                                 wallet-view">
                                         <conditions-panel :active="showPanel" :project="selectedProject" :position="selectedPosition"></conditions-panel>
+                                        <merge-panel :active="showMergePanel" :project="selectedProject"></merge-panel>
                                         <div>
                                             <div class="md-layout md-size-100 md-alignment-top-center">
                                                 <md-button @click="openConditionsPanel"
@@ -33,7 +34,8 @@
                                                     <position-tree :position="position"
                                                                    :posId="position.id"
                                                                    :project="selectedProject"
-                                                                   v-on:open-conditions-panel="splitFromPosition"></position-tree>
+                                                                   v-on:open-conditions-panel="splitFromPosition"
+                                                                   v-on:open-merge-panel="openMergePanel" ></position-tree>
                                             </div>
                                         </div>
                                     </div>
@@ -54,6 +56,7 @@
   import { projects } from "@/utils/social-projects.js";
   import PositionTree from "./PositionTree";
   import ConditionsPanel from "./ConditionsPanel";
+  import MergePanel from "./MergePanel";
 
   export default {
     components: {
@@ -61,6 +64,7 @@
       StatsCard,
       ConditionsPanel,
       PositionTree,
+      MergePanel
     },
     methods: {
       getContract: async function() {
@@ -78,7 +82,6 @@
           await hgBinding.getConditions();
           await hgBinding.getPositions();
           this.positions = state.positions;
-          console.log(this.positions);
       },
       splitFromPosition: function(position) {
           this.openConditionsPanel();
@@ -87,14 +90,8 @@
       openConditionsPanel: function() {
           this.showPanel = !this.showPanel;
       },
-      copy: function(mainObj) {
-          let objCopy = {}; // objCopy will store a copy of the mainObj
-          let key;
-
-          for (key in mainObj) {
-              objCopy[key] = mainObj[key]; // copies each property to the objCopy object
-          }
-          return objCopy;
+      openMergePanel: function() {
+        this.showMergePanel = true;
       }
     },
     data() {
@@ -106,6 +103,7 @@
         selectedProject: null,
         options: ['Overview', 'Conditions'],
         showPanel: false,
+        showMergePanel: false
       }
     },
     beforeMount() {

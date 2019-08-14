@@ -3,6 +3,7 @@
       <position-card :position="position"
                      :project="project"
                      v-on:open-conditions-panel="openConditionsPanel"
+                     v-on:open-merge-panel="openMergePanel"
                      v-on:extend-tree="toggleExtend">
       </position-card>
       <div v-if="position.children && extendTree"
@@ -54,6 +55,9 @@ export default {
       if(position) {
         this.$emit('open-conditions-panel', position, index);
       }
+    },
+    openMergePanel: function() {
+      this.$emit('open-merge-panel');
     }
   }
 }
