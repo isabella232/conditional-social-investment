@@ -8,20 +8,20 @@
         </md-card-header>
 
         <md-card-content>
-                Children count: {{position.children ? position.children.length : 0}}<br/>
-
-                <md-checkbox v-model="selectedToMerge" :value="position">Select to merge</md-checkbox>
+            <md-checkbox v-model="selectedToMerge"
+                         :value="position">Select to merge</md-checkbox>
         </md-card-content>
         <md-card-actions>
             <md-button v-if="position.children"
                        @click="openChildren()"
-                       class="md-lightblue">
+                       class="md-lightblue md-round">
                        <span v-if="!extendTree">View</span>
                        <span v-else>Hide</span>
                        Children</md-button>
-            <md-button @click="selectSplit(position.indexSet)"
-                       class="md-deep-purple">Split</md-button>
-            <md-button @click="merge()" class="md-icon-button md-raised md-primary">
+           <md-button @click="selectSplit(position.indexSet)" class="md-icon-button md-round md-raised md-deep-purple split-merge-button">
+                          <md-icon>call_split</md-icon>
+                          <md-tooltip md-direction="top">Split</md-tooltip></md-button>
+            <md-button @click="merge()" class="md-icon-button md-round md-raised md-primary split-merge-button">
                            <md-icon>call_merge</md-icon>
                            <md-tooltip md-direction="top">Merge</md-tooltip></md-button>
         </md-card-actions>
@@ -51,6 +51,7 @@ export default {
             this.extendTree = !this.extendTree;
             this.$forceUpdate();
             this.$emit('extend-tree');
+        },
         merge: function() {
             this.$emit('open-merge-panel');
         }
@@ -81,4 +82,13 @@ export default {
 </script>
 
 <style lang="css">
+.split-merge-button {
+    height: 40px !important;
+    width: 40px !important;
+    border-radius: 20px;
+    padding-top: 10px !important;
+}
+.md-icon {
+    font-size: 80px !important;
+}
 </style>
