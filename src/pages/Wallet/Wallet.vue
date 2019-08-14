@@ -20,8 +20,13 @@
                                                 md-xsmall-size-100
                                                 md-size-100
                                                 wallet-view">
-                                        <conditions-panel :active="showPanel" :project="selectedProject" :position="selectedPosition"></conditions-panel>
-                                        <merge-panel :active="showMergePanel" :project="selectedProject"></merge-panel>
+                                        <conditions-panel :active="showPanel"
+                                                          :project="selectedProject"
+                                                          :position="selectedPosition"
+                                                          v-on:success="closeConditionsPanel"></conditions-panel>
+                                        <merge-panel :active="showMergePanel"
+                                                     :project="selectedProject"
+                                                     v-on:success="closeMergePanel"></merge-panel>
                                         <div>
                                             <div class="md-layout md-size-100 md-alignment-top-center">
                                                 <md-button @click="openConditionsPanel"
@@ -35,7 +40,7 @@
                                                                    :posId="position.id"
                                                                    :project="selectedProject"
                                                                    v-on:open-conditions-panel="splitFromPosition"
-                                                                   v-on:open-merge-panel="openMergePanel" ></position-tree>
+                                                                   v-on:open-merge-panel="openMergePanel"></position-tree>
                                             </div>
                                         </div>
                                     </div>
@@ -88,10 +93,18 @@
           this.selectedPosition = position;
       },
       openConditionsPanel: function() {
-          this.showPanel = !this.showPanel;
+          this.showPanel = true;
       },
       openMergePanel: function() {
-        this.showMergePanel = true;
+        this.showMergePanel = !this.showMergePanel;
+      },
+      closeConditionsPanel: function() {
+          this.showPanel = false;
+          this.$forceUpdate();
+      },
+      closeMergePanel: function() {
+          this.showMergePanel = false;
+          this.$forceUpdate();
       }
     },
     data() {

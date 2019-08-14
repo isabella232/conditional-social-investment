@@ -1,5 +1,6 @@
 <template lang="html">
   <md-drawer class="md-right" :md-active.sync="active">
+    <md-snackbar :md-active.sync="success">Split transaction was successful.</md-snackbar>
     <md-toolbar style="margin-bottom: 20px;" class="md-teal">
       <h2> Conditions </h2>
     </md-toolbar>
@@ -31,7 +32,8 @@ export default {
   },
   methods: {
     alertSplitSuccess: function() {
-      console.log('hello');
+      this.success = true;
+      this.$emit('success');
     },
     getConditions: async function() {
       await hgBinding.getConditions();
@@ -41,6 +43,7 @@ export default {
   data () {
     return {
       conditions: [],
+      success: false,
     }
   },
   beforeMount() {

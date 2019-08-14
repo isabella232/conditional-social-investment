@@ -49,8 +49,8 @@
         // this.sending = true;
         // await projects.deposit(this.tx.amount);
         // this.sending = false;
-        // this.success = true;
-        // this.$emit('success');
+        this.success = true;
+        this.$emit('success');
       }
     },
     data: function () {

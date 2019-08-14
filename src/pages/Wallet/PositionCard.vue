@@ -96,7 +96,6 @@ export default {
     display: flex;
 }
 .md-checkbox.md-theme-default.md-checked.md-primary .md-checkbox-container {
-    /* background-color: #448aff !important; */
     color: #fff !important;
 }
 .md-checkbox.md-checked .md-checkbox-container:after {
