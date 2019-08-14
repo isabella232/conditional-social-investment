@@ -3,6 +3,8 @@ import Blockchain from "@/Blockchain";
 import state from "@/state";
 import _ from "underscore";
 
+const NULL_ID = "0x0000000000000000000000000000000000000000000000000000000000000000";
+
 
 var getCondition = function(pos) {
   return state.conditions.find((elem) => {
@@ -34,7 +36,6 @@ let hgBinding = {
     if(state.hgRegistry) {
       await state.hgRegistry.getPositions();
       let positions = await this.convertPositions(state.hgRegistry.positions);
-      console.log(positions);
       state.positions = this.filterPositions(positions);
 
     }
@@ -54,46 +55,34 @@ let hgBinding = {
   convertConditionEvent(condition) {
     return state.hgContract.createCondition(condition.oracle, condition.questionId, condition.outcomeSlotCount._hex);
   },
+  convertAndMatchParents(parentsLookup, unmatched, matched) {
+    let next = [];
+    unmatched.map((pos) => {
+      let parent = parentsLookup[pos.values.parentCollectionId];
+
+      if (parent || pos.values.parentCollectionId === NULL_ID) {
+        for (const indexSet of pos.values.partition) {
+          let p = state.hgContract.createPosition(getCondition(pos), indexSet, pos.values.collateralToken, parent);
+          parentsLookup[p.collectionId] = p;
+          if (parent) {
+            (parent.children = parent.children || []).push(p);
+          }
+          matched.push(p);
+        }
+      } else {
+        next.push(pos);
+      }
+    });
+    return next.length == 0 ? matched : this.convertAndMatchParents(parentsLookup, next, matched);
+  },
   //TODO: This logic should be moved to the registry module
   async convertPositions(positions) {
-    let converted = [];
-    let parentLookup = {};
-    await Promise.all(positions.map(async (pos) => {
-        for(const indexSet of pos.values.partition) {
-          if (pos.values.parentCollectionId == "0x0000000000000000000000000000000000000000000000000000000000000000") {
-            let p = state.hgContract.createPosition(getCondition(pos), indexSet, pos.values.collateralToken, null);
-            parentLookup[p.collectionId] = p;
-            p.balance = (await p.balanceOf(state.userAddress)).toNumber();
-            converted.push(p);
-          }
-        };
-      return pos;
-    }));
-
-    await Promise.all(positions.map(async (pos) => {
-      for(const indexSet of pos.values.partition) {
-        if (pos.values.parentCollectionId != "0x0000000000000000000000000000000000000000000000000000000000000000") {
-          console.log("Parent id: " + pos.values.parentCollectionId);
-          let parent = parentLookup[pos.values.parentCollectionId];
-          let p = state.hgContract.createPosition(getCondition(pos), indexSet, pos.values.collateralToken, parent);
-          parentLookup[p.collectionId] = p;
-          p.balance = (await p.balanceOf(state.userAddress)).toNumber();
-          console.log("My id: " + p.collectionId);
-          if (parent) {
-            console.log("Matching parent: " + parent.collectionId);
-            if (parent.children) {
-              parent.children.push(p);
-            } else {
-              parent.children = [p];
-            }
-          }
-          converted.push(p);
-        }
-      };
-      return pos;
-    }));
-
-    return converted;
+    let results = [];
+    let matched = this.convertAndMatchParents({}, positions, results);
+    for(const p of matched) {
+      p.balance = (await p.balanceOf(state.userAddress)).toNumber();
+    }
+    return matched;
   },
   async prepareCondition(condition) {
     if(state.hgContract && condition) {
