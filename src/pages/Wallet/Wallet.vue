@@ -21,43 +21,18 @@
                                                 md-size-100
                                                 wallet-view">
                                         <conditions-panel :active="showPanel" :project="selectedProject"></conditions-panel>
-
-                                        <!--
-                                        <stats-card data-background-color="blue"
-                                                    class="md-layout-item md-size-50">
-                                            <template slot="header">
-                                                <md-icon>account_balance_wallet</md-icon>
-                                            </template>
-
-                                            <template slot="content">
-                                                <p class="category">Funds for this project</p>
-                                                <h3 class="title">
-                                                    <span class="md-prefix">$</span>
-                                                    {{ balance }}
-                                                </h3>
-                                            </template>
-                                            <template slot="footer">
-                                                <md-button class="md-round md-alignment-centre-right md-lightblue"
-                                                           @click="test()">Deposit cash</md-button>
-                                            </template>
-                                        </stats-card>
-                                        -->
-
                                         <div>
                                             <div class="md-layout md-size-100 md-alignment-top-center">
                                                 <md-button @click="openConditionsPanel"
                                                            class="md-round md-alignment-centre-right md-lightblue">Hedge against a risk</md-button>
                                             </div>
                                         </div>
-
-                                        <div v-for="position in positions" class="positions-view">
-                                            <div class="md-layout">
-                                                <div class="tree-view">
-                                                    <!-- <tree-chart :json="" -->
-                                                </div>
-                                                <position-card :position="position"
-                                                               :project="selectedProject"
-                                                               v-on:open-conditions-panel="splitFromPosition"></position-card>
+                                        <div class="md-layout md-size-100" style="min-height: 600px; margin-top: 70px;">
+                                            <div v-for="position in positions.slice(0, 2)" class="md-layout-item md-size-50">
+                                                    <position-tree :position="position"
+                                                                   :posId="position.id"
+                                                                   :project="selectedProject"
+                                                                   v-on:open-conditions-panel="splitFromPosition"></position-tree>
                                             </div>
                                         </div>
                                     </div>
@@ -76,17 +51,15 @@
   import { utils } from "ethers";
   import hgBinding from "@/utils/hgBinding";
   import { projects } from "@/utils/social-projects.js";
-  import TreeChart from "vue-tree-chart";
+  import PositionTree from "./PositionTree";
   import ConditionsPanel from "./ConditionsPanel";
-  import PositionCard from "./PositionCard";
 
   export default {
     components: {
       NavTabsCard,
       StatsCard,
-      TreeChart,
       ConditionsPanel,
-      PositionCard,
+      PositionTree,
     },
     methods: {
       getContract: async function() {
@@ -103,19 +76,31 @@
       fetchPositions: async function() {
           await hgBinding.getConditions();
           await hgBinding.getPositions();
+          let pos1 = this.copy(state.positions[0]);
+          let pos2 = this.copy(state.positions[1]);
+          let children = [pos1, pos2];
           this.positions = state.positions;
-          this.positions.forEach(async (pos) => {
-              pos.balance = await pos.balanceOf();
-              console.log(pos);
-          })
+          this.positions[0].children = children;
+          this.positions[1].children = children;
+          console.log(this.positions);
       },
       splitFromPosition: function(position, index) {
+          console.log(position, index);
           this.openConditionsPanel();
           this.selectedPosition = position[index];
           console.log(this.selectedPosition);
       },
       openConditionsPanel: function() {
           this.showPanel = !this.showPanel;
+      },
+      copy: function(mainObj) {
+          let objCopy = {}; // objCopy will store a copy of the mainObj
+          let key;
+
+          for (key in mainObj) {
+              objCopy[key] = mainObj[key]; // copies each property to the objCopy object
+          }
+          return objCopy;
       }
     },
     data() {
@@ -156,8 +141,5 @@
     }
     .wallet-view {
         min-height: 75vh;
-    }
-    .positions-view {
-        margin-top:40px;
     }
 </style>
