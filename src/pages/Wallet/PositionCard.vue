@@ -7,8 +7,17 @@
             <h5>Balance: <b>{{position.balance}}</b></h5>
         </md-card-header>
         <md-card-content>
-                Children count: {{position.children ? position.children.length : 0}}
-                 <md-table v-for="(option, index) in options">
+                Children count: {{position.children ? position.children.length : 0}}<br/>
+
+                <md-checkbox v-model="selectedToMerge" :value="position">Select to merge</md-checkbox>
+
+                <md-button @click="merge()" class="md-icon-button md-raised md-primary">
+                    <md-icon>call_merge</md-icon>
+                    <md-tooltip md-direction="top">Merge</md-tooltip>
+                </md-button>
+
+
+                <md-table v-for="(option, index) in options">
                      <md-table-row slot="md-table-row"
                                    md-selectable="multiple"
                                    md-auto-select>
@@ -59,6 +68,9 @@ export default {
                 this.$emit('open-conditions-panel', this.position, index);
             }
         },
+        merge: function() {
+            this.$emit('open-merge-panel');
+        }
     },
     data: function() {
         return {
@@ -67,7 +79,8 @@ export default {
             options: [
                 { name: 'Yes' },
                 { name: 'No' }
-            ]
+            ],
+            selectedToMerge: state.selectedToMerge
         }
     },
     filters: {

@@ -21,6 +21,7 @@
                                                 md-size-100
                                                 wallet-view">
                                         <conditions-panel :active="showPanel" :project="selectedProject" :position="selectedPosition"></conditions-panel>
+                                        <merge-panel :active="showMergePanel" :project="selectedProject"></merge-panel>
 
                                         <!--
                                         <stats-card data-background-color="blue"
@@ -57,7 +58,8 @@
                                                 </div>
                                                 <position-card :position="position"
                                                                :project="selectedProject"
-                                                               v-on:open-conditions-panel="splitFromPosition"></position-card>
+                                                               v-on:open-conditions-panel="splitFromPosition"
+                                                               v-on:open-merge-panel="openMergePanel" ></position-card>
                                             </div>
                                         </div>
                                     </div>
@@ -78,6 +80,7 @@
   import { projects } from "@/utils/social-projects.js";
   import TreeChart from "vue-tree-chart";
   import ConditionsPanel from "./ConditionsPanel";
+  import MergePanel from "./MergePanel";
   import PositionCard from "./PositionCard";
 
   export default {
@@ -87,6 +90,7 @@
       TreeChart,
       ConditionsPanel,
       PositionCard,
+      MergePanel
     },
     methods: {
       getContract: async function() {
@@ -111,6 +115,9 @@
       },
       openConditionsPanel: function() {
           this.showPanel = !this.showPanel;
+      },
+      openMergePanel: function() {
+        this.showMergePanel = true;
       }
     },
     data() {
@@ -122,6 +129,7 @@
         selectedProject: null,
         options: ['Overview', 'Conditions'],
         showPanel: false,
+        showMergePanel: false
       }
     },
     beforeMount() {
