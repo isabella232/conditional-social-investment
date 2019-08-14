@@ -12,7 +12,7 @@
                      <md-table-row slot="md-table-row"
                                    md-selectable="multiple"
                                    md-auto-select>
-                     <md-table-cell>{{ option.name }}</md-table-cell>
+                     <md-table-cell>{{ option.name }} {{position[index].id}}</md-table-cell>
                      <md-table-cell style="float: right; margin-top: -20px;">
                              <md-button class="md-just-icon md-simple md-primary"
                                         @click="selectSplit(index)">
