@@ -27,7 +27,7 @@ let hgBinding = {
     if(state.hgRegistry) {
       await state.hgRegistry.getPositions();
       let positions = await this.convertPositions(state.hgRegistry.positions);
-      state.positions = positions;
+      state.positions = this.filterPositions(positions);
       //state.positions = this.filterPositions(positions);
       // this.createPositionTree();
     }
@@ -37,8 +37,9 @@ let hgBinding = {
       let filtered = [];
       // Used forEach bc returned position events are immutable
       positions.forEach( (position) => {
-        if(position[0].balance > 0 || position[1] > 0) {
-            filtered.push(position);
+        //TODO: We should list items with 0 balance but with children
+        if(position.balance >  0) {
+          filtered.push(position);
         }
       });
       return filtered;
@@ -85,14 +86,27 @@ let hgBinding = {
   //TODO: This logic should be moved to the registry module
   async convertPositions(positions) {
     let converted = [];
+    let parentLookup = {};
     await Promise.all(positions.map(async (pos) => {
       if (state.conditions) {
         let condition = state.conditions.find((elem) => {
           return elem.id === pos.values.conditionId;
         });
         for(const indexSet of pos.values.partition) {
-          let p = state.hgContract.createPosition(condition, indexSet, pos.values.collateralToken, pos.values.parentCollectionId);
+          let parent = parentLookup[pos.values.parentCollectionId];
+          let p = state.hgContract.createPosition(condition, indexSet, pos.values.collateralToken, parent);
+          parentLookup[p.collectionId] = p;
           p.balance = (await p.balanceOf(state.userAddress)).toNumber();
+
+          if (parent) {
+            console.log("Matching parent: " + parent.collectionId);
+            if (parent.children) {
+              parent.children.push(p);
+            } else {
+              parent.children = [p];
+            }
+          }
+
           converted.push(p);
         };
       }

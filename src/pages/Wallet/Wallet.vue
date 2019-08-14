@@ -20,7 +20,7 @@
                                                 md-xsmall-size-100
                                                 md-size-100
                                                 wallet-view">
-                                        <conditions-panel :active="showPanel" :project="selectedProject"></conditions-panel>
+                                        <conditions-panel :active="showPanel" :project="selectedProject" :position="selectedPosition"></conditions-panel>
 
                                         <!--
                                         <stats-card data-background-color="blue"
@@ -105,10 +105,9 @@
           await hgBinding.getPositions();
           this.positions = state.positions;
       },
-      splitFromPosition: function(position, index) {
+      splitFromPosition: function(position) {
           this.openConditionsPanel();
-          this.selectedPosition = position[index];
-          console.log(this.selectedPosition);
+          this.selectedPosition = position;
       },
       openConditionsPanel: function() {
           this.showPanel = !this.showPanel;

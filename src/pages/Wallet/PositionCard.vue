@@ -7,6 +7,7 @@
             <h5>Balance: <b>{{position.balance}}</b></h5>
         </md-card-header>
         <md-card-content>
+                Children count: {{position.children ? position.children.length : 0}}
                  <md-table v-for="(option, index) in options">
                      <md-table-row slot="md-table-row"
                                    md-selectable="multiple"
