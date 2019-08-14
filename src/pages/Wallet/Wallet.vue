@@ -96,20 +96,17 @@
           this.showPanel = true;
       },
       openMergePanel: function() {
-<<<<<<< HEAD
         this.showMergePanel = !this.showMergePanel;
       },
       closeConditionsPanel: function() {
           this.showPanel = false;
+          this.fetchPositions();
           this.$forceUpdate();
       },
       closeMergePanel: function() {
           this.showMergePanel = false;
+          this.fetchPositions();
           this.$forceUpdate();
-=======
-        console.log("On open merge");
-        this.showMergePanel = true;
->>>>>>> 1008866c3a34890a7b9d9feb51520eda67fd7b93
       }
     },
     data() {
@@ -121,7 +118,8 @@
         selectedProject: null,
         options: ['Overview', 'Conditions'],
         showPanel: false,
-        showMergePanel: false
+        showMergePanel: false,
+        reload: false,
       }
     },
     beforeMount() {
