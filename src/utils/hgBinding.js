@@ -34,10 +34,12 @@ let hgBinding = {
     if(positions) {
       let filtered = [];
       // Used forEach bc returned position events are immutable
-      positions.forEach((position) => {
-        //TODO: We should list items with 0 balance but with children
-        if(position.balance >  0) {
-          filtered.push(position);
+      positions.forEach(async (position) => {
+        //TODO: We shouldn't have to get children length of 2 only
+        if(position.children) {
+          if(position.balance > 0 && position.children.length === 2) {
+            filtered.push(position);
+          }
         }
       });
       return filtered;
@@ -69,7 +71,6 @@ let hgBinding = {
               parent.children = [p];
             }
           }
-
           converted.push(p);
         };
       }

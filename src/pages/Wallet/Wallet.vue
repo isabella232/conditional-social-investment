@@ -24,7 +24,8 @@
                                         <div>
                                             <div class="md-layout md-size-100 md-alignment-top-center">
                                                 <md-button @click="openConditionsPanel"
-                                                           class="md-round md-alignment-centre-right md-lightblue">Hedge against a risk</md-button>
+                                                           class="md-round md-alignment-centre-right md-lightblue">
+                                                           Hedge against a risk</md-button>
                                             </div>
                                         </div>
                                         <div class="md-layout md-size-100" style="min-height: 600px; margin-top: 70px;">
@@ -76,12 +77,7 @@
       fetchPositions: async function() {
           await hgBinding.getConditions();
           await hgBinding.getPositions();
-          let pos1 = this.copy(state.positions[0]);
-          let pos2 = this.copy(state.positions[1]);
-          let children = [pos1, pos2];
           this.positions = state.positions;
-          this.positions[0].children = children;
-          this.positions[1].children = children;
           console.log(this.positions);
       },
       splitFromPosition: function(position) {
