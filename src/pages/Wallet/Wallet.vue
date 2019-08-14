@@ -96,6 +96,7 @@
           this.showPanel = true;
       },
       openMergePanel: function() {
+<<<<<<< HEAD
         this.showMergePanel = !this.showMergePanel;
       },
       closeConditionsPanel: function() {
@@ -105,6 +106,10 @@
       closeMergePanel: function() {
           this.showMergePanel = false;
           this.$forceUpdate();
+=======
+        console.log("On open merge");
+        this.showMergePanel = true;
+>>>>>>> 1008866c3a34890a7b9d9feb51520eda67fd7b93
       }
     },
     data() {
