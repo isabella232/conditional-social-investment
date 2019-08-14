@@ -3,6 +3,13 @@ import Blockchain from "@/Blockchain";
 import state from "@/state";
 import _ from "underscore";
 
+
+var getCondition = function(pos) {
+  return state.conditions.find((elem) => {
+    return elem.id === pos.values.conditionId;
+  });
+}
+
 let hgBinding = {
   async getContract() {
     let hg = Blockchain.getHGContract();
@@ -27,7 +34,9 @@ let hgBinding = {
     if(state.hgRegistry) {
       await state.hgRegistry.getPositions();
       let positions = await this.convertPositions(state.hgRegistry.positions);
+      console.log(positions);
       state.positions = this.filterPositions(positions);
+
     }
   },
   filterPositions(positions) {
@@ -35,11 +44,8 @@ let hgBinding = {
       let filtered = [];
       // Used forEach bc returned position events are immutable
       positions.forEach(async (position) => {
-        //TODO: We shouldn't have to get children length of 2 only
-        if(position.children) {
-          if(position.balance > 0 && position.children.length === 2) {
-            filtered.push(position);
-          }
+        if(position.balance > 0 && !position.parent) {
+          filtered.push(position);
         }
       });
       return filtered;
@@ -53,16 +59,26 @@ let hgBinding = {
     let converted = [];
     let parentLookup = {};
     await Promise.all(positions.map(async (pos) => {
-      if (state.conditions) {
-        let condition = state.conditions.find((elem) => {
-          return elem.id === pos.values.conditionId;
-        });
         for(const indexSet of pos.values.partition) {
+          if (pos.values.parentCollectionId == "0x0000000000000000000000000000000000000000000000000000000000000000") {
+            let p = state.hgContract.createPosition(getCondition(pos), indexSet, pos.values.collateralToken, null);
+            parentLookup[p.collectionId] = p;
+            p.balance = (await p.balanceOf(state.userAddress)).toNumber();
+            converted.push(p);
+          }
+        };
+      return pos;
+    }));
+
+    await Promise.all(positions.map(async (pos) => {
+      for(const indexSet of pos.values.partition) {
+        if (pos.values.parentCollectionId != "0x0000000000000000000000000000000000000000000000000000000000000000") {
+          console.log("Parent id: " + pos.values.parentCollectionId);
           let parent = parentLookup[pos.values.parentCollectionId];
-          let p = state.hgContract.createPosition(condition, indexSet, pos.values.collateralToken, parent);
+          let p = state.hgContract.createPosition(getCondition(pos), indexSet, pos.values.collateralToken, parent);
           parentLookup[p.collectionId] = p;
           p.balance = (await p.balanceOf(state.userAddress)).toNumber();
-
+          console.log("My id: " + p.collectionId);
           if (parent) {
             console.log("Matching parent: " + parent.collectionId);
             if (parent.children) {
@@ -72,10 +88,11 @@ let hgBinding = {
             }
           }
           converted.push(p);
-        };
-      }
+        }
+      };
       return pos;
     }));
+
     return converted;
   },
   async prepareCondition(condition) {
