@@ -27,8 +27,8 @@ let hgBinding = {
     if(state.hgRegistry) {
       await state.hgRegistry.getPositions();
       let positions = await this.convertPositions(state.hgRegistry.positions);
-      state.positions = this.filterPositions(positions);
-      console.log(state.positions);
+      state.positions = positions;
+      //state.positions = this.filterPositions(positions);
       // this.createPositionTree();
     }
   },
@@ -84,8 +84,8 @@ let hgBinding = {
   },
   //TODO: This logic should be moved to the registry module
   async convertPositions(positions) {
-    return await Promise.all(positions.map(async (pos) => {
-      let converted = []
+    let converted = [];
+    await Promise.all(positions.map(async (pos) => {
       if (state.conditions) {
         let condition = state.conditions.find((elem) => {
           return elem.id === pos.values.conditionId;
@@ -96,8 +96,9 @@ let hgBinding = {
           converted.push(p);
         };
       }
-      return converted;
+      return pos;
     }));
+    return converted;
   },
   async prepareCondition(condition) {
     if(state.hgContract && condition) {

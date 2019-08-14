@@ -4,7 +4,8 @@ const ethers = require('ethers');
 
 // Link gnosis conditional-contracts module to App
 
-const MANAGER_CONTRACT_ADDRESS = "0x2b27168e83cAb0Ee27CCF66c970587B92ee844C4";
+//Old: 0x2b27168e83cAb0Ee27CCF66c970587B92ee844C4
+const MANAGER_CONTRACT_ADDRESS = "0x3cBBb37c83E65de3282E5548Ae2A26Ed806f576f";
 
 let Blockchain = {
   getHGContract() {
