@@ -91,6 +91,7 @@
           this.showPanel = !this.showPanel;
       },
       openMergePanel: function() {
+        console.log("On open merge");
         this.showMergePanel = true;
       }
     },

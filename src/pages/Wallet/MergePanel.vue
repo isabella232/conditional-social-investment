@@ -18,10 +18,9 @@
                     </md-card-content>
                     <md-progress-bar md-mode="indeterminate" v-if="sending"/>
                     <md-card-actions>
-                        <md-button type="submit"
-                                   class="md-primary"
+                        <md-button class="md-primary"
                                    :disabled="sending"
-                                   @click="merge()">Merge
+                                   @click="merge">Merge
                         </md-button>
                     </md-card-actions>
                 </md-card>
@@ -41,11 +40,12 @@
     ],
     methods: {
       async merge() {
-        console.log('Merge');
+        console.log('Merging...');
+        console.log(this.selectedToMerge);
         let condition = this.selectedToMerge[0].condition;
-        console.log(this.project.coupon.address);
-        await condition.mergeAll(this.project.coupon.address, this.tx.amount);
         console.log(condition);
+        await condition.merge(this.selectedToMerge, this.tx.amount);
+        // console.log(condition);
         // this.sending = true;
         // await projects.deposit(this.tx.amount);
         // this.sending = false;

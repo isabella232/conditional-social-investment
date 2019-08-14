@@ -11,12 +11,14 @@
            style="margin-top:30px;">
         <div class="md-layout-item md-size-50">
           <PositionTree :position="position.children[0]"
-                        :posId="position.children[0].id">
+                        :posId="position.children[0].id"
+                        v-on:open-merge-panel="openMergePanel">
           </PositionTree>
         </div>
         <div class="md-layout-item md-size-50">
           <PositionTree :position="position.children[1]"
-                        :posId="position.children[1].id">
+                        :posId="position.children[1].id"
+                        v-on:open-merge-panel="openMergePanel">
           </PositionTree>
         </div>
       </div>

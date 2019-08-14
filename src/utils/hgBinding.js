@@ -53,7 +53,7 @@ let hgBinding = {
     }
   },
   convertConditionEvent(condition) {
-    return state.hgContract.createCondition(condition.oracle, condition.questionId, condition.outcomeSlotCount._hex);
+    return state.hgContract.createCondition(condition.oracle, condition.questionId, condition.outcomeSlotCount.toNumber());
   },
   convertAndMatchParents(parentsLookup, unmatched, matched) {
     let next = [];
