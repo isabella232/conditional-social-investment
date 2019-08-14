@@ -28,7 +28,6 @@
                     </md-field>
                     <md-button @click="fullSplit">
                                 Split</md-button>
-                    <md-button>Merge</md-button>
                 </md-card-content>
             </md-card-expand-content>
         </md-card-expand>
@@ -42,19 +41,26 @@ export default {
     props: [
         'condition',
         'project',
+        'position'
     ],
     methods: {
         fullSplit: async function () {
-            if(this.selectedCondition && this.project) {
-                await this.project.coupon.approve(state.hgContract.contract.address, this.selectedCondition.splitAmount);
-                let position = await this.selectedCondition.fullSplit(this.project.coupon.address, this.selectedCondition.splitAmount);
-                console.log("Position: ");
-                console.log(position);
-                let balance = await this.project.coupon.balanceOf(state.hgContract.contract.address);
-                console.log(parseInt(balance));
-
-                this.$emit('success');
+            if (this.position) {
+              console.log(this.position);
+              console.log(this.selectedCondition);
+              console.log(this.selectedCondition.splitAmount);
+              let positions = await this.position.fullSplit(this.selectedCondition, this.selectedCondition.splitAmount);
+            } else {
+              if(this.selectedCondition && this.project) {
+                  await this.project.coupon.approve(state.hgContract.contract.address, this.selectedCondition.splitAmount);
+                  let position = await this.selectedCondition.fullSplit(this.project.coupon.address, this.selectedCondition.splitAmount);
+                  console.log("Position: ");
+                  console.log(position);
+                  let balance = await this.project.coupon.balanceOf(state.hgContract.contract.address);
+                  console.log(parseInt(balance));
+              }
             }
+            this.$emit('success');
         },
         selectCondition: function(condition) {
             if(this.seletedCondition) {

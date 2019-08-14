@@ -8,6 +8,7 @@
            class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100">
           <condition-card :condition="condition"
                           :project="project"
+                          :position="position"
                           v-on:success="alertSplitSuccess"></condition-card>
       </div>
     </div>
@@ -23,6 +24,7 @@ export default {
   props: [
     'project',
     'active',
+    'position'
   ],
   components: {
     ConditionCard,
