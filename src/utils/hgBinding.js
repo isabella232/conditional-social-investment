@@ -25,28 +25,19 @@ let hgBinding = {
   async getPositions() {
     this.setHGRegistry();
     if(state.hgRegistry) {
-      await state.hgRegistry.getPositions()
-      .then(async () => {
-        let positions = state.hgRegistry.positions.map((pos) => {
-          return this.convertPositionEvent(pos.values);
-        });
-        console.log(positions);
-        await this.filterPositions(positions).then((res) => {
-          state.positions = res;
-        });
-        // this.createPositionTree();
-      });
+      await state.hgRegistry.getPositions();
+      let positions = await this.convertPositions(state.hgRegistry.positions);
+      state.positions = positions;
+      //state.positions = this.filterPositions(positions);
+      // this.createPositionTree();
     }
   },
-  async filterPositions(positions) {
+  filterPositions(positions) {
     if(positions) {
-      let user = await Blockchain.getCurrentUserAddress();
       let filtered = [];
       // Used forEach bc returned position events are immutable
-      positions.forEach(async (position, index) => {
-        let pos1 = await position[0].balanceOf(user);
-        let pos2 = await position[1].balanceOf(user);
-        if(pos1 > 0 || pos2 > 0) {
+      positions.forEach( (position) => {
+        if(position[0].balance > 0 || position[1] > 0) {
             filtered.push(position);
         }
       });
@@ -91,18 +82,23 @@ let hgBinding = {
   convertConditionEvent(condition) {
     return state.hgContract.createCondition(condition.oracle, condition.questionId, condition.outcomeSlotCount._hex);
   },
-  convertPositionEvent(position) {
-    let positions = []
-    if(state.conditions) {
-      let condition = state.conditions.find((elem) => {
-        return elem.id === position.conditionId;
-      });
-      position.partition.forEach((indexSet) => {;
-        let pos = state.hgContract.createPosition(condition, indexSet, position.collateralToken, position.parentCollectionId);
-        positions.push(pos);
-      });
-      return positions;
-    }
+  //TODO: This logic should be moved to the registry module
+  async convertPositions(positions) {
+    let converted = [];
+    await Promise.all(positions.map(async (pos) => {
+      if (state.conditions) {
+        let condition = state.conditions.find((elem) => {
+          return elem.id === pos.values.conditionId;
+        });
+        for(const indexSet of pos.values.partition) {
+          let p = state.hgContract.createPosition(condition, indexSet, pos.values.collateralToken, pos.values.parentCollectionId);
+          p.balance = (await p.balanceOf(state.userAddress)).toNumber();
+          converted.push(p);
+        };
+      }
+      return pos;
+    }));
+    return converted;
   },
   async prepareCondition(condition) {
     if(state.hgContract && condition) {

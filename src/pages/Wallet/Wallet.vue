@@ -21,6 +21,8 @@
                                                 md-size-100
                                                 wallet-view">
                                         <conditions-panel :active="showPanel" :project="selectedProject"></conditions-panel>
+
+                                        <!--
                                         <stats-card data-background-color="blue"
                                                     class="md-layout-item md-size-50">
                                             <template slot="header">
@@ -39,35 +41,16 @@
                                                            @click="test()">Deposit cash</md-button>
                                             </template>
                                         </stats-card>
-                                        <stats-card data-background-color="blue"
-                                                    class="md-layout-item md-size-50">
-                                            <template slot="header">
-                                                <md-icon>account_balance_wallet</md-icon>
-                                            </template>
+                                        -->
 
-                                            <template slot="content">
-                                                <p class="category">Test</p>
-                                                <h3 class="title">
-                                                    <span class="md-prefix">$</span>
-
-                                                </h3>
-                                            </template>
-                                            <template slot="footer">
-                                                <md-button class="md-round md-alignment-centre-right md-lightblue"
-                                                           @click="test()">Test</md-button>
-                                            </template>
-                                        </stats-card>
-                                        <div v-if="positions.length === 0">
-                                            <h3 class=" md-layout md-size-100 md-alignment-top-center">No hedges have been made</h3>
+                                        <div>
                                             <div class="md-layout md-size-100 md-alignment-top-center">
                                                 <md-button @click="openConditionsPanel"
-                                                           class="md-primary md-rounded">Split</md-button>
-                                            </div>
-                                            <div class="md-layout md-size-100 md-alignment-top-center">
-                                                <h3 class="">To begin</h3>
+                                                           class="md-round md-alignment-centre-right md-lightblue">Hedge against a risk</md-button>
                                             </div>
                                         </div>
-                                        <div v-else v-for="position in positions">
+
+                                        <div v-for="position in positions" class="positions-view">
                                             <div class="md-layout">
                                                 <div class="tree-view">
                                                     <!-- <tree-chart :json="" -->
@@ -173,5 +156,8 @@
     }
     .wallet-view {
         min-height: 75vh;
+    }
+    .positions-view {
+        margin-top:40px;
     }
 </style>

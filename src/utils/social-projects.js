@@ -19,7 +19,8 @@ if (typeof injectedWeb3 !== "undefined") {
   console.log(provider);
   signer = provider.getSigner();
   userAddress = signer.getAddress();
-  console.log(signer);
+  state.userAddress = userAddress;
+  console.log("User address: " + state.userAddress);
 } else {
   console.log("No web3 provider available");
 }
@@ -80,7 +81,6 @@ export const projects = {
     console.log("Project added: " + added);
   },
   fetchProjects: async function() {
-    console.log("Fetching projects");
     state.projects.length = 0;
     let eventAbi = [catalogContract.abi[4]];
     let iface = new ethers.utils.Interface(eventAbi);
@@ -109,6 +109,7 @@ export const projects = {
         let token = new ethers.Contract(tokenAddress, demoTokenContract.abi, signer);
 
         let project = {
+          address: address,
           code: code,
           desc: state.projectDesc[code],
           contract: contract,
@@ -117,7 +118,12 @@ export const projects = {
           interests: interests + '%',
           holdings: holdings.valueOf()
         };
-        state.projects.push(project);
+
+        if (!state.projects.some( (project) => {return project.address === address})) {
+          console.log("Adding project: " + address);
+          state.projects.push(project);
+        }
+
       });
     });
     console.log(state.projects);
