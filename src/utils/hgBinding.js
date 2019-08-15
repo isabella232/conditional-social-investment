@@ -39,7 +39,6 @@ let hgBinding = {
       let top = this.getTopLevel(positions);
       top.forEach((pos) => {this.calculateChildrenBalance(pos)});
       state.positions = this.filterPositions(positions);
-
     }
   },
   calculateChildrenBalance(position) {
@@ -71,7 +70,6 @@ let hgBinding = {
   filterPositions(positions) {
     if(positions) {
       let filtered = [];
-      // Used forEach bc returned position events are immutable
       positions.forEach(async (position) => {
         if(position.balance > 0 && !position.parent) {
           filtered.push(position);

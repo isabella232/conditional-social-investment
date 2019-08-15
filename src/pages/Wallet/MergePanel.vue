@@ -12,14 +12,14 @@
                         <div class="md-layout-item md-small-size-100">
                             <md-field>
                                 <label for="amount">Amount to merge</label>
-                                <md-input name="amount" id="amount" v-model="tx.amount" :disabled="sending"/>
+                                <md-input name="amount" id="amount" v-model="tx.amount" :disabled="merging"/>
                             </md-field>
                         </div>
                     </md-card-content>
                     <md-progress-bar md-mode="indeterminate" v-if="merging"/>
                     <md-card-actions>
                         <md-button class="md-primary"
-                                   :disabled="sending"
+                                   :disabled="merging"
                                    @click="merge">Merge
                         </md-button>
                     </md-card-actions>
