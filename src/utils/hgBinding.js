@@ -36,9 +36,37 @@ let hgBinding = {
     if(state.hgRegistry) {
       await state.hgRegistry.getPositions();
       let positions = await this.convertPositions(state.hgRegistry.positions);
+      let top = this.getTopLevel(positions);
+      top.forEach((pos) => {this.calculateChildrenBalance(pos)});
       state.positions = this.filterPositions(positions);
 
     }
+  },
+  calculateChildrenBalance(position) {
+      if (!position.children) {
+        position.childrenBalance = position.balance;
+      } else {
+        position.childrenBalance = 0;
+        let tmp = [];
+        position.children.forEach((child) => {
+          tmp.push(child);
+        })
+        tmp.forEach((child) => {
+          position.childrenBalance += this.calculateChildrenBalance(child);
+        })
+      }
+      //Detach child
+      if (position.childrenBalance === 0 && position.parent) {
+        console.log("Removing child: " + position.collectionId);
+        var index = position.parent.children.indexOf(position);
+        if (index > -1) {
+          position.parent.children.splice(index, 1);
+        }
+      }
+      return position.childrenBalance;
+  },
+  getTopLevel(positions) {
+    return positions.filter((pos) => {return pos.parent == null;})
   },
   filterPositions(positions) {
     if(positions) {

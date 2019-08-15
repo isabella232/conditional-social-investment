@@ -8,20 +8,23 @@
             <div class="md-layout">
                 <balance-widget></balance-widget>
                 <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
-                    <stats-card data-background-color="green">
-                        <template slot="header">
-                            <md-icon>build</md-icon>
-                        </template>
 
-                        <template slot="content">
-                            <p class="category">Don't touch it :)</p>
-                            <h3 class="title">Testing</h3>
-                        </template>
+                    <!--<stats-card data-background-color="green">-->
+                        <!--<template slot="header">-->
+                            <!--<md-icon>build</md-icon>-->
+                        <!--</template>-->
 
-                        <template slot="footer">
-                            <md-button class="md-round md-success" @click="test()">Test</md-button>
-                        </template>
-                    </stats-card>
+                        <!--<template slot="content">-->
+                            <!--<p class="category">Don't touch it :)</p>-->
+                            <!--<h3 class="title">Testing</h3>-->
+                        <!--</template>-->
+
+                        <!--<template slot="footer">-->
+                            <!--<md-button class="md-round md-success" @click="test()">Test</md-button>-->
+                        <!--</template>-->
+                    <!--</stats-card>-->
+
+
                 </div>
             </div>
 

@@ -1,6 +1,6 @@
 <template>
     <md-drawer class="md-right" :md-active.sync="active">
-        <md-snackbar :md-active.sync="success">Your deposit has been added!</md-snackbar>
+        <md-snackbar :md-active.sync="success">Your positions have been merged!</md-snackbar>
         <div>
             <form novalidate class="md-layout">
                 <md-card class="md-layout-item ">
@@ -45,10 +45,6 @@
         let condition = this.selectedToMerge[0].condition;
         console.log(condition);
         await condition.merge(this.selectedToMerge, this.tx.amount);
-        // console.log(condition);
-        // this.sending = true;
-        // await projects.deposit(this.tx.amount);
-        // this.sending = false;
         this.success = true;
         this.$emit('success');
       }

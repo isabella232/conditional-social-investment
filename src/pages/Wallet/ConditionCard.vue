@@ -73,7 +73,7 @@ export default {
     },
     data: function() {
         return {
-            selectedCondition: null,
+            selectedCondition: null
         }
     },
     filters: {

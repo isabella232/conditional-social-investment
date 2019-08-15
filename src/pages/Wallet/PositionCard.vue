@@ -2,6 +2,7 @@
     <md-card class="md-layout md-elevation-2 md-layout-item md-size-100">
         <md-card-header data-background-color="blue" class="md-layout-item">
             <div class="md-title">{{ position.condition.questionId | parseQuestion }}</div>
+            {{position.collectionId}}
             <h4>{{ position.indexSet | parseOption }} </h4>
             <md-divider md-get-palette-color="white"></md-divider>
             <h5>Balance: <b>{{position.balance}}</b></h5>
@@ -13,12 +14,12 @@
                          :value="position">Select to merge</md-checkbox>
         </md-card-content>
         <md-card-actions>
-            <md-button v-if="position.children"
+            <md-button v-if="position.children && position.children.length>0"
                        @click="openChildren()"
                        class="md-lightblue md-round">
                        <span v-if="!extendTree">View</span>
                        <span v-else>Hide</span>
-                       Children</md-button>
+                       Children {{position.children.length}}</md-button>
            <md-button @click="selectSplit(position.indexSet)" class="md-icon-button md-round md-raised md-deep-purple split-merge-button">
                           <md-icon>call_split</md-icon>
                           <md-tooltip md-direction="top">Split</md-tooltip></md-button>

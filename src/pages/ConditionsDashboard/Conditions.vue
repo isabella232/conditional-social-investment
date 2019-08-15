@@ -15,14 +15,35 @@
 
                     <template slot="content">
                         <h4> {{ condition.questionId | getQuestion }} </h4>
+
+
+
+
                     </template>
 
                     <template slot="footer">
+
                         <div class="stats">
                             <h5>Oracle address:</h5>
                             <p>{{ condition.oracle }}</p>
-                        </div><br>
+
+                            <md-table v-for="(option, index) in options">
+                                <md-table-row slot="md-table-row"
+                                              md-selectable="multiple"
+                                              md-auto-select>
+                                    <md-table-cell>{{ option.name }}</md-table-cell>
+
+                                </md-table-row>
+                            </md-table>
+
+                        </div>
+
+
+
                     </template>
+
+
+
                 </stats-card>
             </div>
         </div>
@@ -86,6 +107,10 @@
     name: "conditions-dashboard",
     data: function () {
         return {
+              options: [
+                { name: 'Yes' },
+                { name: 'No' }
+              ],
             conditions: state.conditions,
             showSidepanel: false,
             form: {
@@ -94,7 +119,8 @@
               outcomesSlotsCount: 2,
             },
             sending: false,
-            conditionAdded: false,
+            conditionAdded: false
+
         }
     },
     components: {
@@ -130,4 +156,7 @@
 </script>
 
 <style media="screen">
+    .md-table, .md-table-content {
+        width: 100%;
+    }
 </style>
