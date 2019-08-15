@@ -112,6 +112,7 @@
               outcomesSlotsCount: 2,
             },
             sending: false,
+            success: false,
             conditionAdded: false
 
         }
@@ -131,8 +132,11 @@
       prepareCondition: async function() {
           this.sending = true;
           await hgBinding.prepareCondition(this.form);
+
           this.conditionAdded = true;
+          this.sending = false;
           this.showSidepanel = false;
+          this.success = true;
           this.getConditions();
       },
     },
