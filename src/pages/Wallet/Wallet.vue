@@ -87,6 +87,7 @@
           await hgBinding.getConditions();
           await hgBinding.getPositions();
           this.positions = state.positions;
+          console.log(this.positions);
       },
       splitFromPosition: function(position) {
           this.openConditionsPanel();

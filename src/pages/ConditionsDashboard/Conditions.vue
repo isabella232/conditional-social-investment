@@ -23,23 +23,16 @@
 
                     <template slot="footer">
 
-                        <div class="stats">
-                            <h5>Oracle address:</h5>
-                            <p>{{ condition.oracle }}</p>
-
-                            <md-table v-for="(option, index) in options">
-                                <md-table-row slot="md-table-row"
-                                              md-selectable="multiple"
-                                              md-auto-select>
-                                    <md-table-cell>{{ option.name }}</md-table-cell>
-
-                                </md-table-row>
-                            </md-table>
-
+                        <div class="md-layout-item md-size-100">
+                            <div class="stats">
+                                <h5>Oracle address:</h5>
+                                <p class="oracle-address">{{ condition.oracle }}</p>
+                            </div>
+                            <h6 class="md-size-33">Options: </h6>
+                            <div class="md-layout-item md-size-33" v-for="(option, index) in options">
+                                <div class="condition-option md-lightblue">{{ option.name }}</div>
+                            </div>
                         </div>
-
-
-
                     </template>
 
 
@@ -139,6 +132,8 @@
           this.sending = true;
           await hgBinding.prepareCondition(this.form);
           this.conditionAdded = true;
+          this.showSidepanel = false;
+          this.getConditions();
       },
     },
     beforeMount() {
@@ -158,5 +153,12 @@
 <style media="screen">
     .md-table, .md-table-content {
         width: 100%;
+    }
+    .oracle-address {
+        word-break: break-all !important;
+    }
+    .condition-option {
+        /* width: 33% !important; */
+        height: 40px;
     }
 </style>

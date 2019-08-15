@@ -16,7 +16,7 @@
                             </md-field>
                         </div>
                     </md-card-content>
-                    <md-progress-bar md-mode="indeterminate" v-if="sending"/>
+                    <md-progress-bar md-mode="indeterminate" v-if="merging"/>
                     <md-card-actions>
                         <md-button class="md-primary"
                                    :disabled="sending"
@@ -40,6 +40,7 @@
     ],
     methods: {
       async merge() {
+        this.merging = true;
         console.log('Merging...');
         console.log(this.selectedToMerge);
         let condition = this.selectedToMerge[0].condition;
@@ -47,6 +48,7 @@
         await condition.merge(this.selectedToMerge, this.tx.amount);
         this.success = true;
         this.$emit('success');
+        this.merging = false;
       }
     },
     data: function () {
@@ -55,7 +57,7 @@
           amount: 0
         },
         selectedToMerge: state.selectedToMerge,
-        sending: false,
+        merging: false,
         success: false,
         showSidepanel: true
       }

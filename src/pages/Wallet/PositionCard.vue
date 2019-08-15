@@ -14,16 +14,16 @@
                          :value="position">Select to merge</md-checkbox>
         </md-card-content>
         <md-card-actions>
-            <md-button v-if="position.children && position.children.length>0"
+            <md-button v-if="position.children && position.children.length > 0"
                        @click="openChildren()"
                        class="md-lightblue md-round">
                        <span v-if="!extendTree">View</span>
                        <span v-else>Hide</span>
-                       Children {{position.children.length}}</md-button>
-           <md-button @click="selectSplit(position.indexSet)" class="md-icon-button md-round md-raised md-deep-purple split-merge-button">
+                       {{position.children.length}} Children</md-button>
+           <md-button @click="selectSplit(position.indexSet)" class="md-icon-button md-round md-raised md-primary split-merge-button">
                           <md-icon>call_split</md-icon>
                           <md-tooltip md-direction="top">Split</md-tooltip></md-button>
-            <md-button @click="merge()" class="md-icon-button md-round md-raised md-primary split-merge-button">
+            <md-button @click="merge()" class="md-icon-button md-round md-raised md-deep-purple split-merge-button">
                            <md-icon>call_merge</md-icon>
                            <md-tooltip md-direction="top">Merge</md-tooltip></md-button>
         </md-card-actions>

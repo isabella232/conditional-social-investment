@@ -14,7 +14,7 @@
                 <md-card-expand-trigger>
                     <md-button data-background-color="teal"
                                @click.native="selectCondition(condition)">
-                               <span v-if="!condition.open">Select</span>
+                               <span v-if="!(selectedCondition === condition)">Select</span>
                                <span v-else>Close</span>
                     </md-button>
                 </md-card-expand-trigger>
@@ -26,7 +26,9 @@
                         <span class="md-prefix">$</span>
                         <md-input v-model="condition.splitAmount"></md-input>
                     </md-field>
-                    <md-button @click="fullSplit">
+                    <md-progress-bar md-mode="indeterminate" v-if="splitting"/>
+                    <md-button @click="fullSplit"
+                                class="md-lightblue">
                                 Split</md-button>
                 </md-card-content>
             </md-card-expand-content>
@@ -45,6 +47,7 @@ export default {
     ],
     methods: {
         fullSplit: async function () {
+            this.splitting = true;
             if (this.position) {
               console.log(this.position);
               console.log(this.selectedCondition);
@@ -61,9 +64,10 @@ export default {
               }
             }
             this.$emit('success');
+            this.splitting = false;
         },
         selectCondition: function(condition) {
-            if(this.seletedCondition) {
+            if(this.selectedCondition) {
                 this.selectedCondition = null;
             }
             else {
@@ -73,7 +77,8 @@ export default {
     },
     data: function() {
         return {
-            selectedCondition: null
+            selectedCondition: null,
+            splitting: false,
         }
     },
     filters: {
