@@ -2,7 +2,6 @@
     <md-card class="md-layout md-elevation-2 md-layout-item md-size-100">
         <md-card-header data-background-color="blue" class="md-layout-item">
             <div class="md-title">{{ position.condition.questionId | parseQuestion }}</div>
-            <span style="word-break:break-all;">{{position.collectionId}}</span>
             <h4>{{ position.indexSet | parseOption }} </h4>
             <md-divider md-get-palette-color="white"></md-divider>
             <h5>Balance: <b>{{position.balance}}</b></h5>
