@@ -13,10 +13,11 @@ const PROJECT_ADDRESS = "0xF4ae14E517Ea5Ae42955fbb1503991d4E0189edC";
 const DEMO_TOKEN_ADDRESS = "0x0d694e6d4310b10830abe7d5CFfde8b4Bf267B40";
 var provider, signer, walletAddress, userAddress;
 
+// TODO: Dhen fix this - Metamask requires this confirmation?
+window.ethereum.enable();
 const injectedWeb3 = window.web3;
 if (typeof injectedWeb3 !== "undefined") {
   provider = new ethers.providers.Web3Provider(injectedWeb3.currentProvider);
-  console.log(provider);
   signer = provider.getSigner();
   userAddress = signer.getAddress();
   state.userAddress = userAddress;
