@@ -9,7 +9,7 @@ const routes = [
   {
     path: "/",
     component: DashboardLayout,
-    redirect: "/social-project",
+    redirect: "/social-projects",
     children: [
       {
         path: "dashboard",
