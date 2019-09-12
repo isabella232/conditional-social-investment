@@ -12,11 +12,6 @@ const routes = [
     redirect: "/social-projects",
     children: [
       {
-        path: "dashboard",
-        name: "Dashboard",
-        component: Dashboard
-      },
-      {
         path: "social-projects",
         name: "SocialProjects",
         component: SocialProjects
