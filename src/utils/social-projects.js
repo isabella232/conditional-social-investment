@@ -1,4 +1,4 @@
-import {state} from "../state.js";
+import state from "@/state";
 import Vue from 'vue';
 
 const ethers = require('ethers');
@@ -11,13 +11,16 @@ const couponContract = require('../contracts/Coupon.json');
 const CATALOG_ADDRESS = "0x3A379D1277C54FB92a718Bb84d0145f7aC707a1F";
 const PROJECT_ADDRESS = "0xF4ae14E517Ea5Ae42955fbb1503991d4E0189edC";
 const DEMO_TOKEN_ADDRESS = "0x0d694e6d4310b10830abe7d5CFfde8b4Bf267B40";
-var provider, signer, walletAddress;
+var provider, signer, walletAddress, userAddress;
 
 const injectedWeb3 = window.web3;
 if (typeof injectedWeb3 !== "undefined") {
   provider = new ethers.providers.Web3Provider(injectedWeb3.currentProvider);
   console.log(provider);
   signer = provider.getSigner();
+  userAddress = signer.getAddress();
+  state.userAddress = userAddress;
+  console.log("User address: " + state.userAddress);
 } else {
   console.log("No web3 provider available");
 }
@@ -30,7 +33,6 @@ export const projects = {
   },
   deployProject: async function() {
     let factory = new ethers.ContractFactory(projectContract.abi, projectContract.bytecode, signer);
-
     //constructor(string memory _name, uint8 _upfrontPaymentPercentage, uint256 _couponNominalPrice, uint256 _couponInterestRate) public
     let contract = await factory.deploy('UNEMPLOYMENT', 0, 1, 15);
     console.log(contract.address);
@@ -58,7 +60,7 @@ export const projects = {
   invest: async function(project, amount) {
     console.log("Investing into project: " + project);
     let walletContract = new ethers.Contract(walletAddress, demoWalletContract.abi, signer);
-    await walletContract.invest(amount, "UNEMPLOYMENT");
+    await walletContract.investAndRedeem(amount, "UNEMPLOYMENT");
     await projects.fetchProjects();
     await this.updateBalance();
   },
@@ -79,7 +81,6 @@ export const projects = {
     console.log("Project added: " + added);
   },
   fetchProjects: async function() {
-    console.log("Fetching projects");
     state.projects.length = 0;
     let eventAbi = [catalogContract.abi[4]];
     let iface = new ethers.utils.Interface(eventAbi);
@@ -90,9 +91,6 @@ export const projects = {
     };
 
     provider.getLogs(filter).then((results) => {
-      console.log("RESULTS FROM FILTER");
-      console.log(results);
-
       results.forEach(async (result) => {
         let event = iface.parseLog(result);
         let address = event.values[1];
@@ -103,18 +101,32 @@ export const projects = {
         //Fetch coupon holdings
         let couponAddress = await contract.getCoupon();
         let coupon = new ethers.Contract(couponAddress, couponContract.abi, signer);
-        let holdings = await coupon.balanceOf(walletAddress);
+
+        let holdings = await coupon.balanceOf(userAddress);
+
+        // Fetch Token
+        let tokenAddress = await contract.getToken();
+        let token = new ethers.Contract(tokenAddress, demoTokenContract.abi, signer);
 
         let project = {
+          address: address,
           code: code,
           desc: state.projectDesc[code],
           contract: contract,
+          coupon: coupon,
+          token: token,
           interests: interests + '%',
           holdings: holdings.valueOf()
         };
-        state.projects.push(project);
+
+        if (!state.projects.some( (project) => {return project.address === address})) {
+          console.log("Adding project: " + address);
+          state.projects.push(project);
+        }
+
       });
     });
+    console.log(state.projects);
   },
   fetchWallet: async function() {
     let address = await signer.getAddress();
@@ -139,5 +151,3 @@ export const projects = {
 };
 
 projects.fetchWallet();
-
-

@@ -21,7 +21,7 @@
 <script>
   import {StatsCard} from "@/components";
   import DepositPanel from "./DepositPanel";
-  import {state} from "../../state.js";
+  import state from "@/state";
 
   export default {
     components: {

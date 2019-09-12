@@ -10,9 +10,9 @@
 
   &.md-checked .md-checkbox-container{
     &:after{
-      border-color: $brand-primary !important;
-      top: 1px;
-      left: 6px;
+      // border-color: $brand-primary !important;
+      top: 2px;
+      left: 10px;
     }
   }
 
@@ -23,8 +23,8 @@
   }
 
   &.md-theme-default.md-checked .md-checkbox-container{
-    background-color: transparent !important;
-    border-color: inherit;
+    background-color: $brand-lightblue !important;
+    border: none;
   }
 
   &.md-theme-default.md-checked .md-ripple{

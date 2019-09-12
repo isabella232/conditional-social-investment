@@ -56,6 +56,12 @@
     &.md-danger{
       @include btn-styles($brand-danger);
     }
+    &.md-lightblue{
+      @include btn-styles($brand-lightblue);
+    }
+    &.md-deep-purple{
+      @include btn-styles($brand-deep-purple);
+    }
     &.md-white{
         &,
         &:focus,

@@ -132,6 +132,18 @@
     @include dropdown-colors($brand-primary);
     @include toolbar-colors($brand-primary);
   }
+  &.md-lightblue{
+    @include dropdown-colors($brand-lightblue);
+    @include toolbar-colors($brand-lightblue);
+  }
+  &.md-teal{
+    @include dropdown-colors($brand-teal);
+    @include toolbar-colors($brand-teal);
+  }
+  &.md-deep-purple{
+    @include dropdown-colors($brand-deep-purple);
+    @include toolbar-colors($brand-deep-purple);
+  }
   &.md-danger{
     @include dropdown-colors($brand-danger);
     @include toolbar-colors($brand-danger);

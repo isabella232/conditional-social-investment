@@ -8,20 +8,23 @@
             <div class="md-layout">
                 <balance-widget></balance-widget>
                 <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
-                    <stats-card data-background-color="green">
-                        <template slot="header">
-                            <md-icon>build</md-icon>
-                        </template>
 
-                        <template slot="content">
-                            <p class="category">Don't touch it :)</p>
-                            <h3 class="title">Testing</h3>
-                        </template>
+                    <!--<stats-card data-background-color="green">-->
+                        <!--<template slot="header">-->
+                            <!--<md-icon>build</md-icon>-->
+                        <!--</template>-->
 
-                        <template slot="footer">
-                            <md-button class="md-round md-success" @click="test()">Test</md-button>
-                        </template>
-                    </stats-card>
+                        <!--<template slot="content">-->
+                            <!--<p class="category">Don't touch it :)</p>-->
+                            <!--<h3 class="title">Testing</h3>-->
+                        <!--</template>-->
+
+                        <!--<template slot="footer">-->
+                            <!--<md-button class="md-round md-success" @click="test()">Test</md-button>-->
+                        <!--</template>-->
+                    <!--</stats-card>-->
+
+
                 </div>
             </div>
 
@@ -66,37 +69,27 @@
 </template>
 
 <script>
-  import {SimpleTable, OrderedTable, StatsCard} from "@/components";
+  import {StatsCard} from "@/components";
   import BalanceWidget from "./BalanceWidget";
   import InvestPanel from "./InvestPanel";
-  import {state} from "../../state.js";
+  import state from "@/state";
   import {projects} from "../../utils/social-projects.js";
-  import hgBinding from "../../utils/hgBinding.js";
 
   export default {
     components: {
-      OrderedTable,
-      SimpleTable,
       StatsCard,
       BalanceWidget,
       InvestPanel
     },
     methods: {
-      async test() {
-        console.log(hgBinding);
-        await hgBinding.fetchConditions();
-      },
-
       async createWallet() {
         this.creating = true;
         await projects.deployDemoWallet();
         this.creating = false;
       },
-
       invest(project) {
         this.selectedProject = project;
       },
-
       invested() {
         this.selectedProject = null;
       }
@@ -104,11 +97,12 @@
     data() {
       return {
         projects: state.projects,
+        conditions: [],
         balance: state.balance,
         selectedProject: null,
         wallet: state.wallet,
         creating: false
       };
-    }
+    },
   };
 </script>
